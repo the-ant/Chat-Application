@@ -6,21 +6,17 @@ import java.util.ResourceBundle;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -34,6 +30,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Callback;
 
 public class MainController implements Initializable {
+	//==============================================================
+	//giao dien khung chat
 	@FXML
 	private MenuItem menuItemAddFriend, menuItemAddGroup;
 	@FXML
@@ -56,6 +54,8 @@ public class MainController implements Initializable {
 	@FXML
 	private ListView<Message> lvMessage;
 
+	// ======================================================================
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -207,26 +207,5 @@ public class MainController implements Initializable {
 		});
 	}
 
-	@FXML
-	private AnchorPane pn_sign;
-	@FXML
-	private AnchorPane loginscene, registerscene;
-
-	@FXML
-	private Button loginBtn, registerBtn, selectLoginBtn;
-
-	@FXML
-	private Hyperlink selectRegisterLink;
-
-	@FXML
-	private void handleButtonAction(ActionEvent event) {
-
-		if (event.getSource() == selectLoginBtn) {
-			loginscene.toFront();
-		} else {
-			if (event.getSource() == selectRegisterLink) {
-				registerscene.toFront();
-			}
-		}
-	}
+	
 }
