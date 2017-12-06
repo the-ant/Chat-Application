@@ -1,0 +1,40 @@
+
+#registerBtn{
+	 -fx-background-color: 
+        linear-gradient(#05B0A4, #00a79d);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+    -fx-text-fill: #F5F9F9;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20 10 20;	
+}
+
+#registerBtn:pressed{
+	 -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+
+#loginBtn{
+	 -fx-background-color: 
+        linear-gradient(#05B0A4, #00a79d);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+    -fx-text-fill: #F5F9F9;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20 10 20;	
+}
+
+#loginBtn:pressed{
+	 -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+#selectLoginBtn{
+	 -fx-background-color: 
+        linear-gradient(#05B0A4, #00a79d);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+    -fx-text-fill: #F5F9F9;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20 10 20;	
+}

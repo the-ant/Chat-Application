@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="460.0" prefWidth="380.0" stylesheets="@../css/login.css"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="application.LoginRegisterController">
+	<children>
+		<PasswordField layoutX="23.0" layoutY="222.0"
+			prefHeight="54.0" prefWidth="335.0" promptText="Password">
+			<font>
+				<Font size="15.0" />
+			</font>
+		</PasswordField>
+		<Label layoutX="149.0" layoutY="30.0" text="Login" textFill="#00a79d">
+			<font>
+				<Font size="27.0" />
+			</font>
+		</Label>
+		<Button fx:id="loginBtn" contentDisplay="CENTER" layoutX="23.0"
+			layoutY="312.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="92.0"
+			text="Login" />
+		<TextField layoutX="23.0" layoutY="131.0" prefHeight="54.0"
+			prefWidth="335.0" promptText="Username">
+			<font>
+				<Font size="15.0" />
+			</font>
+		</TextField>
+		<Hyperlink fx:id="selectRegisterLink" layoutX="244.0"
+			layoutY="320.0" text="Create Account" textFill="#00a79d">
+			<font>
+				<Font size="15.0" />
+			</font>
+		</Hyperlink>
+	</children>
+
+</AnchorPane>

@@ -1,0 +1,56 @@
+#listFriend .list-cell:even {
+-fx-background-color: #00a79d;
+-fx-text-fill: white;
+-fx-font-size: 15.0;
+-fx-background-insets: 0.0 ;
+-fx-border-color: #00a79d;
+}
+#listFriend .list-cell:odd {
+-fx-background-color: #00a79d;
+-fx-text-fill: white;
+-fx-font-size: 15.0;
+-fx-background-insets: 0.0 ;
+-fx-border-color: #00a79d;
+}
+#listFriend {
+-fx-background-insets: 0.0;
+-fx-text-fill: while;
+-fx-padding: 0.0;
+}
+.list-cell:hover{
+    -fx-background-color: #dbdbdb;
+}
+#sendBtn:pressed{
+	 -fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.3) , 3.0, 0.0 , 0.0 , 1.0 );
+}
+#attachedFile:pressed{
+	-fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.3) , 3.0, 0.0 , 0.0 , 1.0 );
+}
+#imageFile:pressed{
+	-fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.3) , 3.0, 0.0 , 0.0 , 1.0 );
+}
+#createNewGroup:pressed{
+	-fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.3) , 3.0, 0.0 , 0.0 , 1.0 );
+}
+
+#lvMessage{
+-fx-background-color: transparent ;
+-fx-background-insets: 0.0;
+-fx-font-size: 5.0;
+-fx-padding: 0.0;
+}
+
+#lvMessage .list-cell:even {
+-fx-background-color: white;
+-fx-text-alignment: left ;
+-fx-font-size: 15.0;
+-fx-background-insets: 0.0 ;
+-fx-border-color: #FFFFFF;
+}
+#lvMessage .list-cell:odd {
+-fx-background-color: #FFFFFF;
+-fx-font-size: 15.0;
+-fx-background-insets: 0.0 ;
+-fx-text-alignment: left ;
+-fx-border-color: #FFFFFF;
+}

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id ="loginRegisterScene" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/login.css" fx:controller="application.LoginRegisterController">
+   <children>
+      <BorderPane prefHeight="600.0" prefWidth="800.0">
+         <bottom>
+            <AnchorPane prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="600.0" fitWidth="352.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/background.jpg" />
+                     </image>
+                  </ImageView>
+                  <AnchorPane fx:id ="registerscene" layoutX="380.0" layoutY="62.0" prefHeight="460.0" prefWidth="380.0" style="-fx-background-color: #FFFFFF;">
+                     <children>
+                        <TextField layoutX="26.0" layoutY="127.0" prefHeight="54.0" prefWidth="335.0" promptText="Username">
+                           <font>
+                              <Font size="15.0" />
+                           </font></TextField>
+                        <PasswordField layoutX="26.0" layoutY="217.0" prefHeight="54.0" prefWidth="335.0" promptText="Password">
+                           <font>
+                              <Font size="15.0" />
+                           </font></PasswordField>
+                        <PasswordField layoutX="26.0" layoutY="307.0" prefHeight="54.0" prefWidth="335.0" promptText="Confirm Pasword">
+                           <font>
+                              <Font size="15.0" />
+                           </font></PasswordField>
+                        <Button fx:id="registerBtn" contentDisplay="CENTER" layoutX="219.0" layoutY="393.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="138.0" text="Register Now!" />
+                        <Label layoutX="142.0" layoutY="33.0" text="Register" textFill="#00a79d">
+                           <font>
+                              <Font size="27.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="selectLoginBtn" contentDisplay="GRAPHIC_ONLY" layoutX="38.0" layoutY="389.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Button">
+                           <graphic>
+                              <FontAwesomeIconView fill="WHITE" glyphName="CHEVRON_LEFT"/>
+                           </graphic></Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="loginscene" layoutX="380.0" layoutY="62.0" prefHeight="460.0" prefWidth="380.0" style="-fx-background-color: #FFFFFF;">
+                     <children>
+                        <TextField layoutX="23.0" layoutY="154.0" prefHeight="54.0" prefWidth="335.0" promptText="Username">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <PasswordField layoutX="23.0" layoutY="245.0" prefHeight="54.0" prefWidth="335.0" promptText="Password">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </PasswordField>
+                        <Label layoutX="157.0" layoutY="57.0" text="Login" textFill="#00a79d">
+                           <font>
+                              <Font size="27.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="loginBtn" graphicTextGap="10.0" layoutX="25.0" layoutY="331.0" onAction="#handleButtonLogin" mnemonicParsing="false" prefHeight="40.0" prefWidth="94.0" style="-fx-border-radius: 4;"  text="Login" textOverrun="WORD_ELLIPSIS" />
+                        <Hyperlink fx:id="selectRegisterLink" layoutX="237.0" layoutY="342.0" onAction="#handleButtonAction" text="Create Account" textFill="#00a79d">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Hyperlink>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
