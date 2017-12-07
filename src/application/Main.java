@@ -20,7 +20,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/view/LoginRegister.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/view/MainLayout.fxml"));
 			primaryStage.setTitle("Chat");
 			primaryStage.setResizable(false);
 			Scene scene = new Scene(root);

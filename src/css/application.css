@@ -1,16 +1,16 @@
 #listFriend .list-cell:even {
--fx-background-color: #00a79d;
+-fx-background-color:  #3a6275;
 -fx-text-fill: white;
 -fx-font-size: 15.0;
 -fx-background-insets: 0.0 ;
--fx-border-color: #00a79d;
+-fx-border-color:  #3a6275;
 }
 #listFriend .list-cell:odd {
--fx-background-color: #00a79d;
+-fx-background-color:  #3a6275;
 -fx-text-fill: white;
 -fx-font-size: 15.0;
 -fx-background-insets: 0.0 ;
--fx-border-color: #00a79d;
+-fx-border-color:  #3a6275;
 }
 #listFriend {
 -fx-background-insets: 0.0;

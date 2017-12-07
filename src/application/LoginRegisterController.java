@@ -64,7 +64,5 @@ public class LoginRegisterController implements Initializable {
 		}
 	}
 
-	private void showWarningRegister() {
-		lbWarningLogin.setText("sai ");
-	}
+
 }

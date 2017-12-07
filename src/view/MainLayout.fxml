@@ -9,11 +9,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <left>            <BorderPane prefHeight="600.0" prefWidth="320.0" style="-fx-background-color: #00a79d;" BorderPane.alignment="CENTER">
          <center>
-            <AnchorPane prefHeight="600.0" prefWidth="320.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="600.0" prefWidth="320.0" style="-fx-background-color: #3a6275;" BorderPane.alignment="CENTER">
                <children>
                   <Label layoutX="87.0" layoutY="46.0" text="ThanhHang" textFill="WHITE">
                      <font>
@@ -35,7 +34,7 @@
                      </contextMenu>
                   </Label>
                   <Label fx:id="lbPosition" layoutX="297.0" layoutY="108.0" prefHeight="17.0" prefWidth="0.0" />
-                  <ListView fx:id="listFriend" layoutX="17.0" layoutY="163.0" prefHeight="408.0" prefWidth="286.0" />
+                  <ListView fx:id="listFriend" layoutX="17.0" layoutY="163.0" prefHeight="408.0" prefWidth="286.0" stylesheets="@../css/application.css" />
                   <Circle fx:id="yourImage" fill="#f8f5f7" layoutX="46.0" layoutY="48.0" radius="35.0" stroke="#f8f5f7" strokeType="INSIDE" />
                   <Label fx:id="firstTextYourName" layoutX="23.0" layoutY="11.0" text="M" textFill="WHITE">
                      <font>
@@ -52,12 +51,12 @@
          <left>
             <VBox prefHeight="50.0" prefWidth="480.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
                <children>
-                  <ListView fx:id="lvMessage" prefHeight="450.0" prefWidth="480.0" />
+                  <ListView fx:id="lvMessage" prefHeight="450.0" prefWidth="480.0" stylesheets="@../css/application.css" />
                   <AnchorPane prefHeight="70.0" prefWidth="480.0">
                      <children>
                         <TextField layoutX="13.0" layoutY="13.0" prefHeight="33.0" prefWidth="315.0" />
                         <FontAwesomeIconView fx:id="attachedFile" fill="#607d8b" glyphName="PAPERCLIP" layoutX="379.0" layoutY="36.0" size="18" />
-                        <FontAwesomeIconView fx:id="sendBtn" fill="#00a79d" glyphName="SEND" layoutX="420.0" layoutY="39.0" size="30" wrappingWidth="33.0" />
+                        <FontAwesomeIconView fx:id="sendBtn" fill="#24283f" glyphName="SEND" layoutX="420.0" layoutY="39.0" size="30" wrappingWidth="33.0" />
                         <FontAwesomeIconView fx:id="imageFile" fill="#607d8b" glyphName="IMAGE" layoutX="344.0" layoutY="35.0" size="18" wrappingWidth="12.857142448425293" />
                      </children>
                   </AnchorPane>
@@ -67,7 +66,7 @@
          <top>
             <AnchorPane prefHeight="80.0" prefWidth="480.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
                <children>
-                  <Label layoutX="76.0" layoutY="32.0" text="Milk" textFill="#00a79d">
+                  <Label layoutX="76.0" layoutY="32.0" text="Milk" textFill="#24283f">
                      <font>
                         <Font size="18.0" />
                      </font>

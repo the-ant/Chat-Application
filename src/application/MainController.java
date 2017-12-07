@@ -24,14 +24,20 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.PopupWindow;
 import javafx.util.Callback;
+import javafx.util.Duration;
+import traynotification.AnimationType;
+import traynotification.NotificationType;
+import traynotification.TrayNotification;
+
 import org.controlsfx.control.PopOver;
 public class MainController implements Initializable{
 	//==============================================================
@@ -68,6 +74,7 @@ public class MainController implements Initializable{
 		initMessage();
 		initMenu();
 		initavataImage();
+		newUserNotification();
 	}
 	
 	private void initavataImage() {
@@ -174,10 +181,11 @@ public class MainController implements Initializable{
 								} else {
 									message.setWrappingWidth(250);
 								}
+								message.setFill(Paint.valueOf("#ffffff"));
 
 								StackPane shapeMessage = new StackPane(message);
 								shapeMessage.setStyle(
-										"-fx-background-color: #A9F5D0; -fx-background-radius: 20; -fx-padding: 10.0;");
+										"-fx-background-color: #3a6275; -fx-background-radius: 20; -fx-padding: 10.0;");
 
 								hBox.getChildren().addAll(shapeMessage);
 								hBox.setAlignment(Pos.CENTER_RIGHT);
@@ -187,7 +195,7 @@ public class MainController implements Initializable{
 								}
 								StackPane shapeMessage = new StackPane(message);
 								shapeMessage.setStyle(
-										"-fx-background-color: #F2F2F2; -fx-background-radius: 20; -fx-padding: 10.0;");
+										"-fx-background-color: #FAFAFA; -fx-background-radius: 20; -fx-padding: 10.0;");
 
 								hBox.getChildren().addAll(cirPictureImageView, shapeMessage);
 								hBox.setSpacing(15.0); // In your case
@@ -231,11 +239,35 @@ public class MainController implements Initializable{
 		popOver.setContentNode(box);
 		//the target is the button
 		popOver.show(lbPosition);
+		
+		popOver.setArrowSize(0);
+		popOver.show(lbPosition);
 	}
 	@FXML
 	private void handleMenuAddGroup(ActionEvent event) {	
 		
 	}
+	public void newUserNotification() { // truyền Message vô
+		System.out.println("hello");
+    	String title = "Has a yourfriend online"; // Hoặc bạn có một tin nhắn mới
+        String message = "ThanhHang online";
+        NotificationType notification = NotificationType.NEWMESSAGE;
+        TrayNotification tray = new TrayNotification();
+        tray.setTitle(title);
+        tray.setMessage(message);
+        tray.setNotificationType(notification);
+        tray.setAnimationType(AnimationType.FADE);
+        tray.showAndDismiss(Duration.seconds(3));
+        
+        try {
+        	Media media = new Media(getClass().getResource("/sounds/notification.mp3").toURI().toString());
+        	MediaPlayer player = new MediaPlayer(media);
+        	player.setAutoPlay(true);
 
+        } catch (Exception e) {
+          e.printStackTrace();
+        } 
+        
 	
+}
 }
