@@ -6,9 +6,11 @@ import java.util.ResourceBundle;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -21,15 +23,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.PopupWindow;
 import javafx.util.Callback;
-
-public class MainController implements Initializable {
+import org.controlsfx.control.PopOver;
+public class MainController implements Initializable{
 	//==============================================================
 	//giao dien khung chat
 	@FXML
@@ -37,7 +41,7 @@ public class MainController implements Initializable {
 	@FXML
 	private ContextMenu contextAddMenu;
 	@FXML
-	private Label createNew;
+	private Label createNew, lbPosition;
 	@FXML
 	private FontAwesomeIconView attachedFile, sendBtn, imageFile;
 	@FXML
@@ -50,6 +54,7 @@ public class MainController implements Initializable {
 	private final ObservableList<Message> message = FXCollections.observableArrayList();
 
 	private Circle circleView;
+	
 
 	@FXML
 	private ListView<Message> lvMessage;
@@ -62,17 +67,21 @@ public class MainController implements Initializable {
 		initListFriend();
 		initMessage();
 		initMenu();
+		initavataImage();
 	}
-
-	private void initListFriend() {
+	
+	private void initavataImage() {
+		//ThanhHang: user, Milk: friend 
 		yourImage.setFill(Paint.valueOf("#CFD8DC"));
 		yourImage.setStroke(Paint.valueOf("#CFD8DC"));
-		firstTextYourName.setText("M");
+		//firstTextYourName.setText("M");
 
 		friendImage.setFill(Paint.valueOf("#CDDC39"));
 		friendImage.setStroke(Paint.valueOf("#CDDC39"));
 		firstTextFriendName.setText("K");
+	}
 
+	private void initListFriend() {
 		data.clear();
 		data.add(new Data("Inu Shiba", "images", true));
 		data.add(new Data("SesshoumaruSama", "sama", false));
@@ -203,8 +212,29 @@ public class MainController implements Initializable {
 			@Override
 			public void handle(MouseEvent event) {
 				contextAddMenu.show(createNew, event.getScreenX(), event.getScreenY());
+			
 			}
 		});
+	}
+	
+	@FXML
+	private void handleMenuAddFriend(ActionEvent event) {
+		Label label = new Label();
+		label.setText("this is popup");
+		PopOver popOver = new PopOver();
+		
+		popOver.arrowSizeProperty();
+		
+		VBox box = new VBox();
+		box.setPadding(new Insets(10));
+		box.getChildren().add(label);
+		popOver.setContentNode(box);
+		//the target is the button
+		popOver.show(lbPosition);
+	}
+	@FXML
+	private void handleMenuAddGroup(ActionEvent event) {	
+		
 	}
 
 	

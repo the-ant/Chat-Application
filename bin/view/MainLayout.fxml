@@ -29,12 +29,13 @@
                            <contextMenu>
                               <ContextMenu fx:id="contextAddMenu">
                                 <items>
-                                  <MenuItem fx:id="menuItemAddFriend" mnemonicParsing="false" text="Add Friend" />
-                                    <MenuItem fx:id="menuItemAddGroup" mnemonicParsing="false" text="Add Group" />
+                                  <MenuItem fx:id="menuItemAddFriend" mnemonicParsing="false" onAction="#handleMenuAddFriend" text="Add Friend" />
+                                    <MenuItem fx:id="menuItemAddGroup" mnemonicParsing="false" onAction="#handleMenuAddGroup" text="Add Group" />
                                 </items>
                               </ContextMenu>
                            </contextMenu>
                         </Label>
+                        <Label fx:id="lbPosition" layoutX="297.0" layoutY="108.0" prefHeight="17.0" prefWidth="0.0" />
                         <ListView fx:id="listFriend" layoutX="17.0" layoutY="163.0" prefHeight="408.0" prefWidth="286.0" />
                         <Circle fx:id="yourImage" fill="#f8f5f7" layoutX="46.0" layoutY="48.0" radius="35.0" stroke="#f8f5f7" strokeType="INSIDE" />
                         <Label fx:id="firstTextYourName" layoutX="23.0" layoutY="11.0" text="M" textFill="WHITE">
