@@ -61,7 +61,16 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="10.0">
                      <children>
-            								<Circle fx:id="mAvatarCircle" fill="#7c9cbc" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <StackPane>
+                           <children>
+                  								<Circle fx:id="mAvatarCircle" fill="#7c9cbc" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="SN">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </StackPane>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sơn Nguyễn">
                            <font>
                               <Font size="16.0" />
@@ -69,8 +78,7 @@
                         </Text>
                         <MenuButton mnemonicParsing="false">
                           <items>
-                            <MenuItem mnemonicParsing="false" text="Action 1" />
-                            <MenuItem mnemonicParsing="false" text="Action 2" />
+                            <MenuItem mnemonicParsing="false" text="Đăng Xuất" />
                           </items>
                         </MenuButton>
                      </children>
@@ -167,11 +175,20 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="94.0" spacing="10.0">
                            <children>
-                              <Circle fill="#e4879e" radius="36.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" />
-                                 </GridPane.margin>
-                              </Circle>
+                              <StackPane>
+                                 <children>
+                                    <Circle fill="#e4879e" radius="36.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" />
+                                       </GridPane.margin>
+                                    </Circle>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="HL">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </StackPane>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="2.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hằng Lùn">
@@ -179,7 +196,7 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Text>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="online">
+                                    <Text fill="#9d9d9d" strokeType="OUTSIDE" strokeWidth="0.0" text="online">
                                        <VBox.margin>
                                           <Insets left="5.0" />
                                        </VBox.margin>

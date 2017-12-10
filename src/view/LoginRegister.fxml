@@ -12,192 +12,197 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <BorderPane prefHeight="600.0" prefWidth="731.0" style="-fx-background-color: rgb(36, 40, 63);" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginRegisterController">
-   <left>
-      <GridPane>
-         <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <ImageView fitHeight="256.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="344.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
-               <image>
-                  <Image url="@../images/chat.png" />
-               </image>
-               <BorderPane.margin>
-                  <Insets left="40.0" right="40.0" />
-               </BorderPane.margin>
-               <GridPane.margin>
-                  <Insets left="50.0" right="50.0" />
-               </GridPane.margin>
-            </ImageView>
-         </children>
-      </GridPane>
-   </left>
-   <top>
-      <AnchorPane BorderPane.alignment="CENTER" />
-   </top>
-   <bottom>
-      <AnchorPane BorderPane.alignment="CENTER" />
-   </bottom>
-   <center>
-      <AnchorPane maxWidth="375.0">
-         <children>
-            <StackPane fx:id="loginStackPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <AnchorPane fx:id="registerAnchorPane" maxWidth="375.0" minWidth="0.0" style="-fx-background-color: white;">
-                     <children>
-                        <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <columnConstraints>
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints maxHeight="267.0" minHeight="10.0" prefHeight="199.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="304.0" minHeight="10.0" prefHeight="256.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="145.0" minHeight="10.0" prefHeight="145.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                           <children>
-                              <GridPane prefHeight="173.0" prefWidth="375.0" GridPane.rowIndex="2">
-                                 <columnConstraints>
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <children>
-                                    <Button fx:id="registerBtn" contentDisplay="CENTER" layoutX="219.0" layoutY="393.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="138.0" text="Register Now!" GridPane.columnIndex="1" />
-                                    <Button fx:id="selectLoginBtn" contentDisplay="GRAPHIC_ONLY" layoutX="38.0" layoutY="389.0" mnemonicParsing="false" onAction="#handleBackLoginScreen" text="Button">
-                                       <graphic>
-                                          <FontAwesomeIconView fill="WHITE" glyphName="CHEVRON_LEFT" />
-                                       </graphic>
-                                    </Button>
-                                 </children>
-                              </GridPane>
-                              <VBox alignment="CENTER" prefHeight="264.0" prefWidth="335.0" spacing="30.0" GridPane.rowIndex="1">
-                                 <children>
-                                    <TextField layoutX="26.0" layoutY="127.0" prefHeight="54.0" prefWidth="335.0" promptText="Username" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                    </TextField>
-                                    <PasswordField layoutX="26.0" layoutY="217.0" prefHeight="54.0" prefWidth="335.0" promptText="Password" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                    </PasswordField>
-                                    <PasswordField layoutX="26.0" layoutY="307.0" prefHeight="54.0" prefWidth="335.0" promptText="Confirm Pasword" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                    </PasswordField>
-                                 </children>
-                                 <GridPane.margin>
-                                    <Insets left="20.0" right="20.0" />
-                                 </GridPane.margin>
-                              </VBox>
-                              <VBox alignment="CENTER" prefHeight="192.0" prefWidth="375.0" spacing="20.0">
-                                 <children>
-                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/user.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label text="Register" textFill="#24283f">
-                                       <font>
-                                          <Font name="Century Gothic" size="36.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </GridPane>
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane fx:id="loginAnchorPane" maxWidth="375.0" minWidth="0.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
-                     <children>
-                        <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <columnConstraints>
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <VBox alignment="CENTER" spacing="30.0" GridPane.rowIndex="1">
-                                 <children>
-                                    <TextField prefHeight="54.0" prefWidth="335.0" promptText="Username" GridPane.rowIndex="1">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                    </TextField>
-                                    <PasswordField prefHeight="54.0" prefWidth="335.0" promptText="Password" GridPane.rowIndex="1">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                    </PasswordField>
-                                 </children>
-                                 <padding>
-                                    <Insets left="20.0" right="20.0" />
-                                 </padding>
-                              </VBox>
-                              <GridPane GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                                 <columnConstraints>
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <children>
-                                    <Button fx:id="loginBtn" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleButtonLogin" prefHeight="40.0" prefWidth="94.0" style="-fx-border-radius: 4;" text="Login" textOverrun="WORD_ELLIPSIS" />
-                                    <Hyperlink fx:id="selectRegisterLink" onAction="#handleCreateAccount" style="-fx-border-color: transparent;" text="Create Account" textFill="#24283f" GridPane.columnIndex="1">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                    </Hyperlink>
-                                 </children>
-                              </GridPane>
-                              <GridPane>
-                                <columnConstraints>
-                                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
-                                       <children>
-                                          <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/user.png" />
-                                             </image>
-                                          </ImageView>
-                                          <Label text="Login" textFill="#24283f">
-                                             <font>
-                                                <Font name="Century Gothic" size="36.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </GridPane>
-                           </children>
-                        </GridPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </StackPane>
-         </children>
-         <BorderPane.margin>
-            <Insets right="-10.0" />
-         </BorderPane.margin>
-      </AnchorPane>
-   </center>
-   <right>
-      <AnchorPane prefHeight="200.0" BorderPane.alignment="CENTER" />
-   </right>
+	<left>
+		<GridPane>
+			<columnConstraints>
+				<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<ImageView fitHeight="256.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="344.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
+					<image>
+						<Image url="@../images/chat.png" />
+					</image>
+					<BorderPane.margin>
+						<Insets left="40.0" right="40.0" />
+					</BorderPane.margin>
+					<GridPane.margin>
+						<Insets left="50.0" right="50.0" />
+					</GridPane.margin>
+				</ImageView>
+			</children>
+		</GridPane>
+	</left>
+	<top>
+		<AnchorPane BorderPane.alignment="CENTER" />
+	</top>
+	<bottom>
+		<AnchorPane BorderPane.alignment="CENTER" />
+	</bottom>
+	<center>
+		<AnchorPane maxWidth="375.0">
+			<children>
+				<StackPane fx:id="loginStackPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+					<children>
+						<AnchorPane fx:id="registerAnchorPane" maxWidth="375.0" minWidth="0.0" style="-fx-background-color: white;">
+							<children>
+								<GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+									<columnConstraints>
+										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+									</columnConstraints>
+									<rowConstraints>
+										<RowConstraints maxHeight="267.0" minHeight="10.0" prefHeight="199.0" vgrow="SOMETIMES" />
+										<RowConstraints maxHeight="304.0" minHeight="10.0" prefHeight="256.0" vgrow="SOMETIMES" />
+										<RowConstraints maxHeight="145.0" minHeight="10.0" prefHeight="145.0" vgrow="SOMETIMES" />
+									</rowConstraints>
+									<children>
+										<GridPane prefHeight="173.0" prefWidth="375.0" GridPane.rowIndex="2">
+											<columnConstraints>
+												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+											</columnConstraints>
+											<rowConstraints>
+												<RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+											</rowConstraints>
+											<children>
+												<Button fx:id="registerBtn" contentDisplay="CENTER" layoutX="219.0" layoutY="393.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="138.0" text="Register Now!" GridPane.columnIndex="1" />
+												<Button fx:id="selectLoginBtn" contentDisplay="GRAPHIC_ONLY" layoutX="38.0" layoutY="389.0" mnemonicParsing="false" onAction="#handleBackLoginScreen" text="Button">
+													<graphic>
+														<FontAwesomeIconView fill="WHITE" glyphName="CHEVRON_LEFT" />
+													</graphic>
+												</Button>
+											</children>
+										</GridPane>
+										<VBox alignment="CENTER" prefHeight="264.0" prefWidth="335.0" spacing="30.0" GridPane.rowIndex="1">
+											<children>
+												<TextField layoutX="26.0" layoutY="127.0" prefHeight="54.0" prefWidth="335.0" promptText="Username" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</TextField>
+												<PasswordField layoutX="26.0" layoutY="217.0" prefHeight="54.0" prefWidth="335.0" promptText="Password" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</PasswordField>
+												<PasswordField layoutX="26.0" layoutY="307.0" prefHeight="54.0" prefWidth="335.0" promptText="Confirm Pasword" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</PasswordField>
+												<TextField prefHeight="54.0" promptText="Full Name" style="-fx-border-color: transparent;">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</TextField>
+											</children>
+											<GridPane.margin>
+												<Insets left="20.0" right="20.0" />
+											</GridPane.margin>
+										</VBox>
+										<VBox alignment="CENTER" prefHeight="192.0" prefWidth="375.0" spacing="20.0">
+											<children>
+												<ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../images/user.png" />
+													</image>
+												</ImageView>
+												<Label text="Register" textFill="#24283f">
+													<font>
+														<Font name="Century Gothic" size="36.0" />
+													</font>
+												</Label>
+											</children>
+										</VBox>
+									</children>
+								</GridPane>
+							</children>
+						</AnchorPane>
+						<AnchorPane fx:id="loginAnchorPane" maxWidth="375.0" minWidth="0.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
+							<children>
+								<GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+									<columnConstraints>
+										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+									</columnConstraints>
+									<rowConstraints>
+										<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+									</rowConstraints>
+									<children>
+										<VBox alignment="CENTER" spacing="30.0" GridPane.rowIndex="1">
+											<children>
+												<TextField prefHeight="54.0" prefWidth="335.0" promptText="Username" GridPane.rowIndex="1">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</TextField>
+												<PasswordField prefHeight="54.0" prefWidth="335.0" promptText="Password" GridPane.rowIndex="1">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</PasswordField>
+											</children>
+											<padding>
+												<Insets left="20.0" right="20.0" />
+											</padding>
+										</VBox>
+										<GridPane GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+											<columnConstraints>
+												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+											</columnConstraints>
+											<rowConstraints>
+												<RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+											</rowConstraints>
+											<children>
+												<Button fx:id="loginBtn" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleButtonLogin" prefHeight="40.0" prefWidth="94.0" style="-fx-border-radius: 4;" text="Login" textOverrun="WORD_ELLIPSIS" />
+												<Hyperlink fx:id="selectRegisterLink" onAction="#handleCreateAccount" style="-fx-border-color: transparent;" text="Create Account" textFill="#24283f" GridPane.columnIndex="1">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</Hyperlink>
+											</children>
+										</GridPane>
+										<GridPane>
+											<columnConstraints>
+												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+											</columnConstraints>
+											<rowConstraints>
+												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+											</rowConstraints>
+											<children>
+												<VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+													<children>
+														<ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+															<image>
+																<Image url="@../images/user.png" />
+															</image>
+														</ImageView>
+														<Label text="Login" textFill="#24283f">
+															<font>
+																<Font name="Century Gothic" size="36.0" />
+															</font>
+														</Label>
+													</children>
+												</VBox>
+											</children>
+										</GridPane>
+									</children>
+								</GridPane>
+							</children>
+						</AnchorPane>
+					</children>
+				</StackPane>
+			</children>
+			<BorderPane.margin>
+				<Insets right="-10.0" />
+			</BorderPane.margin>
+		</AnchorPane>
+	</center>
+	<right>
+		<AnchorPane prefHeight="200.0" BorderPane.alignment="CENTER" />
+	</right>
 </BorderPane>
