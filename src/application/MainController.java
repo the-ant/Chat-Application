@@ -34,8 +34,6 @@ public class MainController implements Initializable {
 	@FXML
 	private Text friendChatNameText, friendChatStatusText;
 
-	private Circle circle;
-
 	private ObservableList<Group> data = FXCollections.observableArrayList();
 	private ObservableList<Message> message = FXCollections.observableArrayList();
 

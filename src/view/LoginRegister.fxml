@@ -75,8 +75,13 @@
 												</Button>
 											</children>
 										</GridPane>
-										<VBox alignment="CENTER" prefHeight="264.0" prefWidth="335.0" spacing="30.0" GridPane.rowIndex="1">
+										<VBox alignment="CENTER" prefHeight="264.0" prefWidth="335.0" spacing="20.0" GridPane.rowIndex="1">
 											<children>
+                                    <Label text="Đăng ký không thành công" textFill="#a10505">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
 												<TextField layoutX="26.0" layoutY="127.0" prefHeight="54.0" prefWidth="335.0" promptText="Username" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
 													<font>
 														<Font size="15.0" />
@@ -127,13 +132,18 @@
 										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 									</columnConstraints>
 									<rowConstraints>
-										<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints maxHeight="238.0" minHeight="10.0" prefHeight="238.0" valignment="CENTER" vgrow="SOMETIMES" />
+										<RowConstraints maxHeight="195.0" minHeight="10.0" prefHeight="186.0" vgrow="SOMETIMES" />
 										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<VBox alignment="CENTER" spacing="30.0" GridPane.rowIndex="1">
+										<VBox alignment="CENTER" prefHeight="168.0" prefWidth="375.0" spacing="20.0" GridPane.rowIndex="1">
 											<children>
+                                    <Label fx:id="notificationLbl" text="Đăng nhập không thành công" textFill="#a10505">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
 												<TextField prefHeight="54.0" prefWidth="335.0" promptText="Username" GridPane.rowIndex="1">
 													<font>
 														<Font size="15.0" />
@@ -166,7 +176,7 @@
 												</Hyperlink>
 											</children>
 										</GridPane>
-										<GridPane>
+										<GridPane prefHeight="222.0" prefWidth="375.0">
 											<columnConstraints>
 												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 											</columnConstraints>
