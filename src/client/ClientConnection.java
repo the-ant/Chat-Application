@@ -112,39 +112,39 @@ public class ClientConnection extends Thread {
 		}
 	}
 
-	private void receiveResponseAddGroup(int parseInt) {
+	private void receiveResponseAddGroup(int response) {
 
 	}
 
-	private void receiveResponseAddFriend(int parseInt) {
+	private void receiveResponseAddFriend(int response) {
 
 	}
 
-	private void receiveResponseGetUser(String string) {
+	private void receiveResponseGetUser(String response) {
 
 	}
 
-	private void receiveResponseGetGroup(String string) {
+	private void receiveResponseGetGroup(String response) {
 
 	}
 
-	private void receiveResponseGetMessage(String string) {
+	private void receiveResponseGetMessage(String response) {
 
 	}
 
-	private void receiveResponseGetRelationship(String string) {
+	private void receiveResponseGetRelationship(String response) {
+		System.out.println("Relationship: " + response);
+	}
+
+	private void receiveResponseSendMessage(int response) {
 
 	}
 
-	private void receiveResponseSendMessage(int parseInt) {
+	private void receiveResponseRegister(int response) {
 
 	}
 
-	private void receiveResponseRegister(int parseInt) {
-
-	}
-
-	private void receiveResponseLogout(int parseInt) {
+	private void receiveResponseLogout(int response) {
 
 	}
 
@@ -152,10 +152,11 @@ public class ClientConnection extends Thread {
 		System.out.println("--> Response login from server: " + response);
 		if (response == 1) {
 			System.out.println("--> Da login thanh cong.");
-			controller.name.setText("Okie");
+			
+			String requestGetRelationship = FlagConnection.GET_RELATIONSHIP + "|";
+			sendMessage(requestGetRelationship);
 		} else {
 			System.out.println("--> Login khong thanh cong.");
-			controller.name.setText("Failed");
 		}
 	}
 
