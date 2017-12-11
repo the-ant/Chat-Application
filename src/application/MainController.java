@@ -3,19 +3,23 @@ package application;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import client.Client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import pojo.Group;
 import pojo.Message;
+import pojo.User;
 import traynotification.AnimationType;
 import traynotification.NotificationType;
 import traynotification.TrayNotification;
@@ -33,22 +37,32 @@ public class MainController implements Initializable {
 	private TextField tfSearch, tfTypeMessage;
 	@FXML
 	private Text friendChatNameText, friendChatStatusText;
+	@FXML
+	public Label name;
 
+	private Stage primaryStage = Main.getPrimaryStage();
+	
 	private ObservableList<Group> data = FXCollections.observableArrayList();
 	private ObservableList<Message> message = FXCollections.observableArrayList();
 
+	private User admin = new User("admin", "1", true);
+	private User sdt = new User("sdt", "123", true);
+	private Client client = Client.getInstance();
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		initClient();
 		initListFriend();
 		initMessage();
 	}
 
+	private void initClient() {
+		client.initClient(this);
+		client.login(admin.getUsername(), admin.getPassword());
+		primaryStage.setOnCloseRequest(e -> client.closeClient());
+	}
+
 	private void initListFriend() {
-		data.add(new Group("Inu Shiba"));
-		data.add(new Group("SesshoumaruSama"));
-		data.add(new Group("DehyDration"));
-		data.add(new Group("HangNguyen"));
-		
 		lvGroups.setItems(data);
 		lvGroups.setCellFactory(lv -> new CustomListCellGroup());
 	}

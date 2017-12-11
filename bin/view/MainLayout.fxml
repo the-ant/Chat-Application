@@ -71,7 +71,7 @@
                               </Text>
                            </children>
                         </StackPane>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sơn Nguyễn">
+                        <Text fx:id="textName" strokeType="OUTSIDE" strokeWidth="0.0" text="Sơn Nguyễn">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -204,6 +204,7 @@
                                  </children>
                               </VBox>
                               <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
+                              <Label fx:id="name" text="Label" />
                            </children>
                            <padding>
                               <Insets left="10.0" />

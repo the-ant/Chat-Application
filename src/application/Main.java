@@ -20,6 +20,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			setPrimaryStage(primaryStage);
 			Parent root = FXMLLoader.load(getClass().getResource("/view/MainLayout.fxml"));
 			primaryStage.setTitle("Chat");
 			primaryStage.setResizable(false);
