@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
@@ -204,7 +205,8 @@ public class MainController implements Initializable {
 		popOver.setTitle("New Group");
 		popOver.arrowSizeProperty();
 		popOver.setArrowSize(0);
-		popOver.setContentNode(popupLayout);	    
+		popOver.setContentNode(popupLayout);
+		
 		popOver.show(addFriendsBtn);
 		
 		 
