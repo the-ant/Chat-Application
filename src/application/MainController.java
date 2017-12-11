@@ -1,10 +1,7 @@
 package application;
 
-import java.awt.CheckboxGroup;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.PopOver;
@@ -15,7 +12,6 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
@@ -60,7 +56,6 @@ public class MainController implements Initializable {
 	private BorderPane p;
 
 
-	private Circle circle;
 
 	private ObservableList<Group> data = FXCollections.observableArrayList();
 	private ObservableList<Message> message = FXCollections.observableArrayList();
@@ -70,6 +65,7 @@ public class MainController implements Initializable {
 		initListFriend();
 		initMessage();
 		initAddMenu();
+		newUserNotification();
 	}
 
 	private void initListFriend() {
