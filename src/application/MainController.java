@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,7 +48,7 @@ public class MainController implements Initializable{
 	@FXML
 	private ContextMenu contextAddMenu;
 	@FXML
-	private Label createNew, lbPosition;
+	private Label createNew, lbPosition, lbUsername;
 	@FXML
 	private FontAwesomeIconView attachedFile, sendBtn, imageFile;
 	@FXML
@@ -69,7 +70,7 @@ public class MainController implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		initLabelUsername();
 		initListFriend();
 		initMessage();
 		initMenu();
@@ -77,6 +78,10 @@ public class MainController implements Initializable{
 		newUserNotification();
 	}
 	
+	private void initLabelUsername() {
+		lbUsername.setText(CurrentUser.getInstance().getUsername());
+	}
+
 	private void initavataImage() {
 		//ThanhHang: user, Milk: friend 
 		yourImage.setFill(Paint.valueOf("#CFD8DC"));
@@ -87,7 +92,6 @@ public class MainController implements Initializable{
 		friendImage.setStroke(Paint.valueOf("#CDDC39"));
 		firstTextFriendName.setText("K");
 	}
-
 	private void initListFriend() {
 		data.clear();
 		data.add(new Data("Inu Shiba", "images", true));

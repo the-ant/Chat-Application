@@ -9,7 +9,6 @@ public class Data {
 		this.username = username;
 		this.imagefile = imgefile;
 		this.status_user = status_user;
-
 	}
 
 	public String getImagefile() {

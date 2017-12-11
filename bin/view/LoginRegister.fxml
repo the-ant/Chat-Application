@@ -77,17 +77,22 @@
                               </GridPane>
                               <VBox alignment="CENTER" prefHeight="264.0" prefWidth="335.0" spacing="30.0" GridPane.rowIndex="1">
                                  <children>
-                                    <TextField layoutX="26.0" layoutY="127.0" prefHeight="54.0" prefWidth="335.0" promptText="Username" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
+                                 	<Label text="Đăng ký không thành công" textFill="#a10505">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+									</Label>
+                                    <TextField fx:id="rgUsername" layoutX="26.0" layoutY="127.0" prefHeight="54.0" prefWidth="335.0" promptText="Username" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </TextField>
-                                    <PasswordField layoutX="26.0" layoutY="217.0" prefHeight="54.0" prefWidth="335.0" promptText="Password" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
+                                    <PasswordField fx:id="rgPassword" layoutX="26.0" layoutY="217.0" prefHeight="54.0" prefWidth="335.0" promptText="Password" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </PasswordField>
-                                    <PasswordField layoutX="26.0" layoutY="307.0" prefHeight="54.0" prefWidth="335.0" promptText="Confirm Pasword" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
+                                    <PasswordField fx:id="rgConfirmPassword" layoutX="26.0" layoutY="307.0" prefHeight="54.0" prefWidth="335.0" promptText="Confirm Pasword" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -129,12 +134,17 @@
                            <children>
                               <VBox alignment="CENTER" spacing="30.0" GridPane.rowIndex="1">
                                  <children>
-                                    <TextField prefHeight="54.0" prefWidth="335.0" promptText="Username" GridPane.rowIndex="1">
+                                 	<Label fx:id="lbAlertError" textFill="#a10505">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+									</Label>
+                                    <TextField fx:id="lgUsername" prefHeight="54.0" prefWidth="335.0" promptText="Username" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </TextField>
-                                    <PasswordField prefHeight="54.0" prefWidth="335.0" promptText="Password" GridPane.rowIndex="1">
+                                    <PasswordField fx:id="lgPassword" prefHeight="54.0" prefWidth="335.0" promptText="Password" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
