@@ -1,56 +1,88 @@
-#listFriend .list-cell:even {
--fx-background-color:  #3a6275;
--fx-text-fill: white;
--fx-font-size: 15.0;
--fx-background-insets: 0.0 ;
--fx-border-color:  #3a6275;
-}
-#listFriend .list-cell:odd {
--fx-background-color:  #3a6275;
--fx-text-fill: white;
--fx-font-size: 15.0;
--fx-background-insets: 0.0 ;
--fx-border-color:  #3a6275;
-}
-#listFriend {
--fx-background-insets: 0.0;
--fx-text-fill: while;
--fx-padding: 0.0;
-}
-.list-cell:hover{
-    -fx-background-color: #dbdbdb;
-}
-#sendBtn:pressed{
-	 -fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.3) , 3.0, 0.0 , 0.0 , 1.0 );
-}
-#attachedFile:pressed{
-	-fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.3) , 3.0, 0.0 , 0.0 , 1.0 );
-}
-#imageFile:pressed{
-	-fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.3) , 3.0, 0.0 , 0.0 , 1.0 );
-}
-#createNewGroup:pressed{
-	-fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.3) , 3.0, 0.0 , 0.0 , 1.0 );
+
+.menu-item:focused{
+     -fx-background-color: rgb(99, 99, 99);
 }
 
-#lvMessage{
--fx-background-color: transparent ;
--fx-background-insets: 0.0;
--fx-font-size: 5.0;
--fx-padding: 0.0;
+.menu-button {
+    -fx-background-color:  rgb(249.0, 249.0, 249.0);
 }
 
-#lvMessage .list-cell:even {
--fx-background-color: white;
--fx-text-alignment: left ;
--fx-font-size: 15.0;
--fx-background-insets: 0.0 ;
--fx-border-color: #FFFFFF;
+.menu-button > .arrow-button > .arrow {
+    -fx-background-color: #2f2f7a;
 }
+
+
+#tfSearch
+{
+  -fx-font-size: 14.0;
+    -fx-background-color: transparent;
+  -fx-background-radius: 4.0;
+  -fx-padding: 3.0, 5.0, 3.0, 5.0;
+}
+ 
+#tfSearch:hover
+{
+    -fx-background-color: transparent;
+   -fx-background-radius: 4.0;
+  -fx-padding: 3.0, 5.0, 3.0, 5.0;
+}
+ 
+#tfSearch:focused
+{
+    -fx-background-color: transparent;
+    -fx-background-radius: 4.0;
+  -fx-padding: 3.0, 5.0, 3.0, 5.0;
+}
+
+.list-view .scroll-bar:vertical .increment-arrow,
+.list-view .scroll-bar:vertical .decrement-arrow,
+.list-view .scroll-bar:vertical .increment-button,
+.list-view .scroll-bar:vertical .decrement-button {
+    -fx-padding:0.0;
+}
+
+.list-view .scroll-bar:horizontal .increment-arrow,
+.list-view .scroll-bar:horizontal .decrement-arrow,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0.0;
+}
+
+#lvMessage {
+  -fx-background-insets: 0.0;
+  -fx-padding: 10.0, 2.0, 10.0, 2.0;
+}
+
 #lvMessage .list-cell:odd {
--fx-background-color: #FFFFFF;
--fx-font-size: 15.0;
--fx-background-insets: 0.0 ;
--fx-text-alignment: left ;
--fx-border-color: #FFFFFF;
+    -fx-background-color: white;
 }
+
+#lvMessage .list-cell:filled:focused:selected {
+    -fx-background-color: white;
+    -fx-background: -fx-accent;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+
+#lvGroups {
+    -fx-background-color: transparent;
+  -fx-background-insets: 0.0;
+  -fx-padding: 0.0;
+}
+
+#lvGroups .list-cell {
+    -fx-background-color: transparent;
+}
+
+#lvGroups .list-cell:odd {
+    -fx-background-color: transparent;
+}
+
+#lvGroups .list-cell:filled:focused:selected {
+    -fx-background-color: rgb(226.0, 226.0, 226.0);
+    -fx-background: -fx-accent;
+    -fx-background: -fx-accent;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+
+
+
