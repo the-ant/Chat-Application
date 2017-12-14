@@ -27,7 +27,7 @@ public class CustomListCellMessage extends ListCell<Message> {
 
 			Circle circle = new Circle(10, Paint.valueOf("#d87b7b"));
 			Text name = new Text("HL");
-			name.setFont(new Font("System", 10));
+			name.setFont(new Font("Sysmtem", 10));
 			name.setFill(Color.WHITE);
 			name.setBoundsType(TextBoundsType.VISUAL);
 			

@@ -67,7 +67,7 @@
 												<RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
 											</rowConstraints>
 											<children>
-												<Button fx:id="registerBtn" contentDisplay="CENTER" layoutX="219.0" layoutY="393.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="138.0" text="Register Now!" GridPane.columnIndex="1" />
+												<Button fx:id="registerBtn" onAction="#handleRegisterAccount" contentDisplay="CENTER" layoutX="219.0" layoutY="393.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="138.0" text="Register Now!" GridPane.columnIndex="1" />
 												<Button fx:id="selectLoginBtn" contentDisplay="GRAPHIC_ONLY" layoutX="38.0" layoutY="389.0" mnemonicParsing="false" onAction="#handleBackLoginScreen" text="Button">
 													<graphic>
 														<FontAwesomeIconView fill="WHITE" glyphName="CHEVRON_LEFT" />
@@ -75,24 +75,29 @@
 												</Button>
 											</children>
 										</GridPane>
-										<VBox alignment="CENTER" prefHeight="264.0" prefWidth="335.0" spacing="30.0" GridPane.rowIndex="1">
+										<VBox alignment="CENTER" prefHeight="264.0" prefWidth="335.0" spacing="20.0" GridPane.rowIndex="1">
 											<children>
-												<TextField layoutX="26.0" layoutY="127.0" prefHeight="54.0" prefWidth="335.0" promptText="Username" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
+			                                    <Label fx:id="lbAlertErrorRegisterForm" textFill="#a10505">
+			                                       <font>
+			                                          <Font size="14.0" />
+			                                       </font>
+			                                    </Label>
+												<TextField fx:id="rgUsername" layoutX="26.0" layoutY="127.0" prefHeight="54.0" prefWidth="335.0" promptText="Username" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
 													<font>
 														<Font size="15.0" />
 													</font>
 												</TextField>
-												<PasswordField layoutX="26.0" layoutY="217.0" prefHeight="54.0" prefWidth="335.0" promptText="Password" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
+												<PasswordField fx:id="rgPassword" layoutX="26.0" layoutY="217.0" prefHeight="54.0" prefWidth="335.0" promptText="Password" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
 													<font>
 														<Font size="15.0" />
 													</font>
 												</PasswordField>
-												<PasswordField layoutX="26.0" layoutY="307.0" prefHeight="54.0" prefWidth="335.0" promptText="Confirm Pasword" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
+												<PasswordField fx:id="rgConfirmPassword" layoutX="26.0" layoutY="307.0" prefHeight="54.0" prefWidth="335.0" promptText="Confirm Pasword" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
 													<font>
 														<Font size="15.0" />
 													</font>
 												</PasswordField>
-												<TextField prefHeight="54.0" promptText="Full Name" style="-fx-border-color: transparent;">
+												<TextField fx:id="rgFullName" prefHeight="54.0" promptText="Full Name" style="-fx-border-color: transparent;">
 													<font>
 														<Font size="15.0" />
 													</font>
@@ -127,19 +132,24 @@
 										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 									</columnConstraints>
 									<rowConstraints>
-										<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints maxHeight="238.0" minHeight="10.0" prefHeight="238.0" valignment="CENTER" vgrow="SOMETIMES" />
+										<RowConstraints maxHeight="195.0" minHeight="10.0" prefHeight="186.0" vgrow="SOMETIMES" />
 										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<VBox alignment="CENTER" spacing="30.0" GridPane.rowIndex="1">
+										<VBox alignment="CENTER" prefHeight="168.0" prefWidth="375.0" spacing="20.0" GridPane.rowIndex="1">
 											<children>
-												<TextField prefHeight="54.0" prefWidth="335.0" promptText="Username" GridPane.rowIndex="1">
+			                                    <Label fx:id="lbAlertLoginForm" textFill="#a10505">
+			                                       <font>
+			                                          <Font size="16.0" />
+			                                       </font>
+			                                    </Label>
+												<TextField fx:id="lgUsername" prefHeight="54.0" prefWidth="335.0" promptText="Username" GridPane.rowIndex="1">
 													<font>
 														<Font size="15.0" />
 													</font>
 												</TextField>
-												<PasswordField prefHeight="54.0" prefWidth="335.0" promptText="Password" GridPane.rowIndex="1">
+												<PasswordField fx:id="lgPassword" prefHeight="54.0" prefWidth="335.0" promptText="Password" GridPane.rowIndex="1">
 													<font>
 														<Font size="15.0" />
 													</font>
@@ -166,7 +176,7 @@
 												</Hyperlink>
 											</children>
 										</GridPane>
-										<GridPane>
+										<GridPane prefHeight="222.0" prefWidth="375.0">
 											<columnConstraints>
 												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 											</columnConstraints>

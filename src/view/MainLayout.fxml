@@ -36,7 +36,7 @@
       												<Insets />
       											</HBox.margin>
       										</ImageView>
-      										<TextField fx:id="tfSearch" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" prefWidth="320.0" promptText="Tìm kiếm">
+      										<TextField fx:id="tfSearch" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" prefWidth="320.0" promptText="TÃ¬m kiáº¿m">
       											<GridPane.margin>
       												<Insets left="10.0" right="10.0" />
       											</GridPane.margin>
@@ -71,14 +71,14 @@
                               </Text>
                            </children>
                         </StackPane>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sơn Nguyễn">
+                        <Text fx:id="textName" strokeType="OUTSIDE" strokeWidth="0.0">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Text>
                         <MenuButton mnemonicParsing="false">
                           <items>
-                            <MenuItem mnemonicParsing="false" text="Đăng Xuất" />
+                            <MenuItem mnemonicParsing="false" text="Ä�Äƒng Xuáº¥t" />
                           </items>
                         </MenuButton>
                      </children>
@@ -127,7 +127,7 @@
                   <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 					<children>
-						<TextField fx:id="tfTypeMessage" prefHeight="49.0" promptText="Nhập tin nhắn..." style="-fx-background-color: white;" GridPane.rowIndex="2">
+						<TextField fx:id="tfTypeMessage" prefHeight="49.0" promptText="Nháº­p tin nháº¯n..." style="-fx-background-color: white;" GridPane.rowIndex="2">
 							<font>
 								<Font size="14.0" />
 							</font>
@@ -191,12 +191,12 @@
                               </StackPane>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="2.0">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hằng Lùn">
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Háº±ng LÃ¹n">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
                                     </Text>
-                                    <Text fx:id="statusLb" fill="#9d9d9d" strokeType="OUTSIDE" strokeWidth="0.0" text="online">
+                                    <Text fill="#9d9d9d" strokeType="OUTSIDE" strokeWidth="0.0" text="online">
                                        <VBox.margin>
                                           <Insets left="5.0" />
                                        </VBox.margin>
@@ -204,6 +204,7 @@
                                  </children>
                               </VBox>
                               <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
+                              <Label fx:id="name" text="Label" />
                            </children>
                            <padding>
                               <Insets left="10.0" />

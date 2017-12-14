@@ -1,33 +1,36 @@
 package application;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import client.Client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import pojo.Group;
 import pojo.Message;
+import pojo.User;
 import traynotification.AnimationType;
 import traynotification.NotificationType;
 import traynotification.TrayNotification;
 import utils.CustomListCellGroup;
 import utils.CustomListCellMessage;
-import utils.PopOverAddMenu;
+import utils.JSONUtils;
 
 public class MainController implements Initializable {
 	@FXML
@@ -39,32 +42,67 @@ public class MainController implements Initializable {
 	@FXML
 	private TextField tfSearch, tfTypeMessage;
 	@FXML
-	private Text friendChatNameText, friendChatStatusText, statusLb, notificationAddFriendText,
-			notificationNewGroupText;
+	private Text friendChatNameText, friendChatStatusText, textName;
 	@FXML
-	private ImageView addFriendsBtn;
+	public Label name;
 
-	private int countCLick = 0;
-
+	private Stage primaryStage = Main.getPrimaryStage();
+	
 	private ObservableList<Group> data = FXCollections.observableArrayList();
 	private ObservableList<Message> message = FXCollections.observableArrayList();
 
+	private Client client = Client.getInstance();
+	private List<User> users = new ArrayList<>();
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		initClient();
 		initListFriend();
 		initMessage();
-		initAddMenu();
-		newUserNotification();
+	}
+
+	private void initClient() {
+		textName.setText(CurrentUser.getInstance().getFullName());
+		setDataForListFriends(CurrentUser.getInstance().getRelationship());
+		primaryStage.setOnCloseRequest(e -> client.closeClient());
+	}
+	public void requestListOfFriends() {
+		client.send("listOfMyFriends:");
 	}
 
 	private void initListFriend() {
-		data.add(new Group("Inu Shiba"));
-		data.add(new Group("SesshoumaruSama"));
-		data.add(new Group("DehyDration"));
-		data.add(new Group("HangNguyen"));
-
 		lvGroups.setItems(data);
-		lvGroups.setCellFactory(lv -> new CustomListCellGroup());
+		lvGroups.setCellFactory(lv -> new CustomListCellGroup(this.users, CurrentUser.getInstance().getUser_id()));
+	}
+	private void handleJsonForGroups(JSONArray jsonArrayGroups) {
+		for (int i = 0; i < jsonArrayGroups.length(); i++) {
+			JSONObject jsonGroup = jsonArrayGroups.getJSONObject(i);
+			String[] userIds = jsonGroup.getString("list_users").split(",");
+			List<Integer> list_users = new ArrayList<>(); 
+			for (String userId : userIds) {
+				list_users.add(Integer.parseInt(userId));
+				
+			}
+			Group group = new Group(jsonGroup.getInt("group_id"), jsonGroup.getString("group_name")
+									, jsonGroup.getInt("user_id_created"), jsonGroup.getBoolean("is_chat_group")
+									, list_users);
+			this.data.add(group);
+		}
+	}
+	private void handleJsonForListFriends(JSONArray jsonArrayFriends) {
+		for (int i = 0; i < jsonArrayFriends.length(); i++) {
+			JSONObject jsonFriends = jsonArrayFriends.getJSONObject(i);
+			this.users.add(new User(jsonFriends.getInt("user_id"), jsonFriends.getString("fullname")
+							, jsonFriends.getInt("online")));
+		}
+	}
+	public void setDataForListFriends(String listOfMyFriends) {
+		System.out.println("List of my friends: " + listOfMyFriends);
+		JSONObject jsonData = new JSONObject(listOfMyFriends);
+		JSONArray jsonArrayGroups = jsonData.getJSONArray("groups");
+		//handleJsonForGroups(jsonArrayGroups);
+		this.data.addAll(JSONUtils.parseGroups(jsonArrayGroups));
+		JSONArray jsonArrayListFriends = jsonData.getJSONArray("friends");
+		this.users = JSONUtils.parseFriends(jsonArrayListFriends);
 	}
 
 	private void initMessage() {
@@ -110,34 +148,6 @@ public class MainController implements Initializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-	}
-
-	MouseEvent mouseType ;
-	public void initAddMenu() {
-		addFriendsBtn.setOnMouseClicked(event -> {
-
-			final ContextMenu contextMenu = new ContextMenu();
-			final MenuItem itemAddFriend = new MenuItem("Add new friend");
-			final MenuItem itemNewGroup = new MenuItem("Add new group");
-			contextMenu.getItems().addAll(itemAddFriend, itemNewGroup);
-			
-			contextMenu.addEventFilter(MouseEvent.ANY, e->{
-				mouseType = e;
-			});
-
-			addFriendsBtn.setOnContextMenuRequested(e -> {
-					contextMenu.show(addFriendsBtn, e.getScreenX(), e.getScreenY());
-			});
-			
-			PopOverAddMenu popOverAddMenu = new PopOverAddMenu();
-			itemNewGroup.setOnAction(e -> {
-				popOverAddMenu.showPopOverNewGroup(addFriendsBtn);
-			});
-			itemAddFriend.setOnAction(e -> {
-				popOverAddMenu.showPopOverAddFriend(addFriendsBtn);
-			});
-		});
 
 	}
 }
