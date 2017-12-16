@@ -13,7 +13,7 @@
 
 <BorderPane prefHeight="600.0" prefWidth="1080.0" style="-fx-background-color: white;" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
 	<left>
-		<BorderPane prefHeight="601.0" prefWidth="342.0" style="-fx-background-color: rgb(249, 249, 249);" BorderPane.alignment="CENTER">
+		<BorderPane prefHeight="601.0" prefWidth="286.0" style="-fx-background-color: rgb(249, 249, 249);" BorderPane.alignment="CENTER">
 			<top>
 				<GridPane prefHeight="120.0" prefWidth="343.0">
 					<columnConstraints>
@@ -96,7 +96,7 @@
 				<Insets left="-1.0" top="-1.0" />
 			</BorderPane.margin>
 			<center>
-				<ListView fx:id="lvGroups" fixedCellSize="60.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
+				<ListView fx:id="lvGroups" fixedCellSize="60.0" prefHeight="471.0" prefWidth="308.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets top="10.0" />
                </BorderPane.margin></ListView>
@@ -204,7 +204,6 @@
                                  </children>
                               </VBox>
                               <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
-                              <Label fx:id="name" text="Label" />
                            </children>
                            <padding>
                               <Insets left="10.0" />

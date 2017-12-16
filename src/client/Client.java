@@ -3,7 +3,11 @@ package client;
 import java.io.IOException;
 import java.net.Socket;
 
+import javax.security.auth.login.LoginContext;
+
+import application.LoginRegisterController;
 import application.MainController;
+import interfaces.ReceiveResponseListener;
 import pojo.Relationship;
 
 public class Client {
@@ -22,12 +26,12 @@ public class Client {
 	private ClientConnection clientConnection;
 	private Socket socket;
 	private boolean connected = false;
-	private MainController controller;
+	private LoginRegisterController controller;
 
 	private Client() {
 	}
 
-	public void initClient(MainController controler) {
+	public void init(LoginRegisterController controler) {
 		try {
 			this.controller = controler;
 			socket = new Socket(IP_ADDRESS, PORT);
@@ -39,6 +43,19 @@ public class Client {
 		} catch (IOException e) {
 			System.out.println("--> Khong the ket noi den server!");
 		}
+	}
+	
+	public void login(String username, String password, ReceiveResponseListener listener) {
+		clientConnection.requestLoginToServer(username, password);
+		listener.onLoginReceive();
+	}
+	
+	public ClientConnection getClientConnection() {
+		return clientConnection;
+	}
+	
+	public void getRelationship(ReceiveResponseListener listener) {
+		
 	}
 
 	public void startClient() {
@@ -69,12 +86,9 @@ public class Client {
 		return connected;
 	}
 
-	public Relationship getRelationship() {
+	public Relationship requestGetRelationship(ReceiveResponseListener listener) {
 		
 		return null;
 	}
 
-	public void login(String username, String password) {
-		clientConnection.requestLoginToServer(username, password);
-	}
 }

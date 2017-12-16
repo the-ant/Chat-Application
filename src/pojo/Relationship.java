@@ -8,7 +8,7 @@ public class Relationship {
 	private int userID;
 	private List<Integer> listFriendsID;
 	private List<Integer> listGroupsID;
-
+	
 	public Relationship() {
 	}
 

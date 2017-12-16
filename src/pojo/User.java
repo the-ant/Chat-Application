@@ -19,9 +19,22 @@ public class User {
 		this.online = online;
 	}
 
+	public User(int id, String username, String fullname, boolean online) {
+		this.id = id;
+		this.username = username;
+		this.setFullname(fullname);
+		this.online = online;
+	}
+
 	public User(String username, String password, boolean online) {
 		this.username = username;
 		this.password = password;
+		this.online = online;
+	}
+
+	public User(int id, String fullname, boolean online) {
+		this.id = id;
+		this.setFullname(fullname);
 		this.online = online;
 	}
 

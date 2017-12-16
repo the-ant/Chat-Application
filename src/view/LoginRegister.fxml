@@ -67,7 +67,7 @@
 												<RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
 											</rowConstraints>
 											<children>
-												<Button fx:id="registerBtn" contentDisplay="CENTER" layoutX="219.0" layoutY="393.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="138.0" text="Register Now!" GridPane.columnIndex="1" />
+												<Button fx:id="registerBtn" onAction="#handleRegisterAccount" contentDisplay="CENTER" layoutX="219.0" layoutY="393.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="138.0" text="Register Now!" GridPane.columnIndex="1" />
 												<Button fx:id="selectLoginBtn" contentDisplay="GRAPHIC_ONLY" layoutX="38.0" layoutY="389.0" mnemonicParsing="false" onAction="#handleBackLoginScreen" text="Button">
 													<graphic>
 														<FontAwesomeIconView fill="WHITE" glyphName="CHEVRON_LEFT" />
@@ -77,27 +77,27 @@
 										</GridPane>
 										<VBox alignment="CENTER" prefHeight="264.0" prefWidth="335.0" spacing="20.0" GridPane.rowIndex="1">
 											<children>
-                                    <Label text="Đăng ký không thành công" textFill="#a10505">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
-												<TextField layoutX="26.0" layoutY="127.0" prefHeight="54.0" prefWidth="335.0" promptText="Username" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
+			                                    <Label fx:id="lbAlertErrorRegisterForm" textFill="#a10505">
+			                                       <font>
+			                                          <Font size="14.0" />
+			                                       </font>
+			                                    </Label>
+												<TextField fx:id="rgUsername" layoutX="26.0" layoutY="127.0" prefHeight="54.0" prefWidth="335.0" promptText="Username" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
 													<font>
 														<Font size="15.0" />
 													</font>
 												</TextField>
-												<PasswordField layoutX="26.0" layoutY="217.0" prefHeight="54.0" prefWidth="335.0" promptText="Password" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
+												<PasswordField fx:id="rgPassword" layoutX="26.0" layoutY="217.0" prefHeight="54.0" prefWidth="335.0" promptText="Password" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
 													<font>
 														<Font size="15.0" />
 													</font>
 												</PasswordField>
-												<PasswordField layoutX="26.0" layoutY="307.0" prefHeight="54.0" prefWidth="335.0" promptText="Confirm Pasword" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
+												<PasswordField fx:id="rgConfirmPassword" layoutX="26.0" layoutY="307.0" prefHeight="54.0" prefWidth="335.0" promptText="Confirm Pasword" style="-fx-border-color: transparent;" GridPane.rowIndex="1">
 													<font>
 														<Font size="15.0" />
 													</font>
 												</PasswordField>
-												<TextField prefHeight="54.0" promptText="Full Name" style="-fx-border-color: transparent;">
+												<TextField fx:id="rgFullName" prefHeight="54.0" promptText="Full Name" style="-fx-border-color: transparent;">
 													<font>
 														<Font size="15.0" />
 													</font>
@@ -139,17 +139,17 @@
 									<children>
 										<VBox alignment="CENTER" prefHeight="168.0" prefWidth="375.0" spacing="20.0" GridPane.rowIndex="1">
 											<children>
-                                    <Label fx:id="notificationLbl" text="Đăng nhập không thành công" textFill="#a10505">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </Label>
-												<TextField prefHeight="54.0" prefWidth="335.0" promptText="Username" GridPane.rowIndex="1">
+			                                    <Label fx:id="lbAlertLoginForm" textFill="#a10505">
+			                                       <font>
+			                                          <Font size="16.0" />
+			                                       </font>
+			                                    </Label>
+												<TextField fx:id="lgUsername" prefHeight="54.0" prefWidth="335.0" promptText="Username" GridPane.rowIndex="1">
 													<font>
 														<Font size="15.0" />
 													</font>
 												</TextField>
-												<PasswordField prefHeight="54.0" prefWidth="335.0" promptText="Password" GridPane.rowIndex="1">
+												<PasswordField fx:id="lgPassword" prefHeight="54.0" prefWidth="335.0" promptText="Password" GridPane.rowIndex="1">
 													<font>
 														<Font size="15.0" />
 													</font>
