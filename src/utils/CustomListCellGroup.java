@@ -34,12 +34,12 @@ public class CustomListCellGroup extends ListCell<Group> {
 			name.setFont(new Font("Sysmtem", 15));
 			name.setFill(Color.WHITE);
 			name.setBoundsType(TextBoundsType.VISUAL);
-			Circle circleView;
-			if (true) { // isStatus? 
-				circleView = new Circle(4, Paint.valueOf("#58FA82"));
-			} else{
-				circleView = new Circle(4, Paint.valueOf("#E6E6E6"));
-			}
+//			Circle circleView;
+//			if (true) { // isStatus? 
+//				circleView = new Circle(4, Paint.valueOf("#58FA82"));
+//			} else{
+//				circleView = new Circle(4, Paint.valueOf("#E6E6E6"));
+//			}
 			Region regionPaddingRightName = new Region();
 			HBox.setHgrow(regionPaddingRightName, Priority.ALWAYS);
 			
@@ -57,7 +57,7 @@ public class CustomListCellGroup extends ListCell<Group> {
 			content.setFont(new Font("System", 12));
 			
 			title.getChildren().addAll(nameGroup, content);
-			root.getChildren().addAll(stack, title, regionPaddingRightName, circleView);
+			root.getChildren().addAll(stack, title, regionPaddingRightName);
 			setGraphic(root);
 		}
 	}
