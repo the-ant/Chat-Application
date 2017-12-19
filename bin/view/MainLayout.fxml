@@ -49,7 +49,7 @@
       										</TextField>
       									</children>
       								</HBox>
-								<ImageView fx:id="addFriendsBtn" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+								<ImageView fx:id="addMenuBtn" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
 									<image>
 										<Image url="@../images/add.png" />
 									</image>

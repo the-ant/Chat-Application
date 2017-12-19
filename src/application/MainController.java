@@ -1,32 +1,41 @@
 package application;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import client.Client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import pojo.CurrentUser;
+import pojo.FlagConnection;
 import pojo.Group;
 import pojo.Message;
+import pojo.User;
 import traynotification.AnimationType;
 import traynotification.NotificationType;
 import traynotification.TrayNotification;
 import utils.CustomListCellGroup;
 import utils.CustomListCellMessage;
+import utils.JSONUtils;
 import utils.PopOverAddMenu;
 
 public class MainController implements Initializable {
@@ -39,55 +48,78 @@ public class MainController implements Initializable {
 	@FXML
 	private TextField tfSearch, tfTypeMessage;
 	@FXML
-	private Text friendChatNameText, friendChatStatusText, statusLb, notificationAddFriendText,
-			notificationNewGroupText;
+	private Text friendChatNameText, friendChatStatusText;
+	
 	@FXML
-	private ImageView addFriendsBtn;
+	private ImageView addMenuBtn;
 
-	private int countCLick = 0;
+	private Stage primaryStage = Main.getPrimaryStage();
+	private Client client = Client.getInstance();
+	private CurrentUser me = CurrentUser.getInstance();
 
-	private ObservableList<Group> data = FXCollections.observableArrayList();
-	private ObservableList<Message> message = FXCollections.observableArrayList();
+	private ObservableList<Group> listGroups = FXCollections.observableArrayList();
+	private ObservableList<Message> listMessages = FXCollections.observableArrayList();
+	private List<User> listFriends;
+
+	private String newMsg = "";
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		initClient();
 		initListFriend();
 		initMessage();
 		initAddMenu();
-		newUserNotification();
+	}
+
+	private void initClient() {
+		client.getClientConnection().setMainController(this);
+		primaryStage.setOnCloseRequest(e -> client.closeClient());
 	}
 
 	private void initListFriend() {
-		data.add(new Group("Inu Shiba"));
-		data.add(new Group("SesshoumaruSama"));
-		data.add(new Group("DehyDration"));
-		data.add(new Group("HangNguyen"));
-
-		lvGroups.setItems(data);
-		lvGroups.setCellFactory(lv -> new CustomListCellGroup());
+		setDataForListFriends(me.getRelationship());
+		lvGroups.setItems(listGroups);
+		lvGroups.setCellFactory(lv -> new CustomListCellGroup(listFriends, me.getUser_id()));
+		lvGroups.getSelectionModel().select(0);
 	}
 
 	private void initMessage() {
-		message.add(new Message(1, "Alo moi nguoi", true));
-		message.add(new Message(2, "Hi Hang", false));
-		message.add(new Message(1, "Alo moi nguoi", true));
-		message.add(new Message(2, "cả bầu Trời nắng", false));
-		message.add(
-				new Message(2,
-						"Mưa trôi cả bầu Trời nắng, trượt theo những nỗi buồn Thấm ướt lệ sầu môi đắng "
-								+ "vì đánh mất hy vọng Lần đầu gặp nhau dưới mưa, trái tim rộn ràng bởi ánh nhìn ",
-						false));
-		message.add(new Message(1, "Alo moi nguoi Alo moi nguoi Alo moi nguoi Alo moi nguoi"
-				+ " Alo moi nguoi Alo moi nguoi Alo moi nguoi", true));
-		message.add(new Message(2, "cả bầu Trời nắng", false));
-
-		message.add(new Message(1, "Alo moi nguoi", true));
-		message.add(new Message(2, "Hi Hang", false));
-		message.add(new Message(1, "Alo moi nguoi", true));
-		message.add(new Message(2, "cả bầu Trời nắng", false));
-
 		lvMessage.setCellFactory(lv -> new CustomListCellMessage());
-		lvMessage.setItems(message);
+		lvMessage.setItems(listMessages);
+
+		tfTypeMessage.setOnKeyPressed(e -> {
+			if (e.getCode() == KeyCode.ENTER && !tfTypeMessage.getText().isEmpty()) {
+				sendMessageTo(tfTypeMessage.getText());
+				newMsg = tfTypeMessage.getText();
+			}
+		});
+
+		tfTypeMessage.setOnMouseClicked(e -> {
+			if (!tfTypeMessage.getText().isEmpty()) {
+				sendMessageTo(tfTypeMessage.getText());
+				newMsg = tfTypeMessage.getText();
+			}
+		});
+	}
+
+	private void sendMessageTo(String msg) {
+		Group selectedGroup = getSelectedGroup();
+		String desId = getDesFriendId(selectedGroup);
+		String requestMsg = FlagConnection.SEND_MESSAGE + "|" + selectedGroup.getId() + "|" + desId + "|" + msg;
+		client.send(requestMsg);
+	}
+
+	private String getDesFriendId(Group selectedGroup) {
+		String result = selectedGroup.getListUserIDStr();
+		return result;
+	}
+
+	public void setNewMessageToListView() {
+
+	}
+
+	public Group getSelectedGroup() {
+		return lvGroups.getSelectionModel().getSelectedItem();
 	}
 
 	public void newUserNotification() {
@@ -113,31 +145,37 @@ public class MainController implements Initializable {
 
 	}
 
-	MouseEvent mouseType ;
+	public void setDataForListFriends(String listOfMyFriends) {
+		JSONObject jsonData = new JSONObject(listOfMyFriends);
+
+		JSONArray jsonArrayGroups = jsonData.getJSONArray("groups");
+		this.listGroups.addAll(JSONUtils.parseGroups(jsonArrayGroups));
+
+		JSONArray jsonArrayListFriends = jsonData.getJSONArray("friends");
+		this.listFriends = JSONUtils.parseFriends(jsonArrayListFriends);
+	}
 	public void initAddMenu() {
-		addFriendsBtn.setOnMouseClicked(event -> {
+		addMenuBtn.setOnMouseClicked(event -> {
 
 			final ContextMenu contextMenu = new ContextMenu();
 			final MenuItem itemAddFriend = new MenuItem("Add new friend");
 			final MenuItem itemNewGroup = new MenuItem("Add new group");
 			contextMenu.getItems().addAll(itemAddFriend, itemNewGroup);
 			
-			contextMenu.addEventFilter(MouseEvent.ANY, e->{
-				mouseType = e;
-			});
 
-			addFriendsBtn.setOnContextMenuRequested(e -> {
-					contextMenu.show(addFriendsBtn, e.getScreenX(), e.getScreenY());
+			addMenuBtn.setOnContextMenuRequested(e -> {
+					contextMenu.show(addMenuBtn, e.getScreenX(), e.getScreenY());
 			});
 			
 			PopOverAddMenu popOverAddMenu = new PopOverAddMenu();
 			itemNewGroup.setOnAction(e -> {
-				popOverAddMenu.showPopOverNewGroup(addFriendsBtn);
+				popOverAddMenu.showPopOverNewGroup(addMenuBtn);
 			});
 			itemAddFriend.setOnAction(e -> {
-				popOverAddMenu.showPopOverAddFriend(addFriendsBtn);
+				popOverAddMenu.showPopOverAddFriend(addMenuBtn);
 			});
 		});
 
 	}
+
 }
