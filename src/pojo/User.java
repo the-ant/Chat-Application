@@ -37,6 +37,10 @@ public class User {
 		this.setFullname(fullname);
 		this.online = online;
 	}
+	public User(int id, String fullname) {
+		this.id = id;
+		this.fullname = fullname;
+	}
 
 	public int getId() {
 		return id;

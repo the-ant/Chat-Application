@@ -14,19 +14,19 @@
 				<Font size="20.0" />
 			</font>
 		</Label>
-		<Button fx:id="addFriendBtn" contentDisplay="CENTER" layoutX="24.0" layoutY="420.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="92.0" text="Add" />
-		<TextField layoutX="125.0" layoutY="65.0" prefHeight="30.0" prefWidth="232.0" promptText="Uername">
+		<Button fx:id="addFriendBtn" contentDisplay="CENTER" layoutX="24.0" layoutY="420.0" mnemonicParsing="false" onAction="#handleAddNewFriend" prefHeight="40.0" prefWidth="92.0" text="Add" />
+		<TextField fx:id="tfNewFriend" layoutX="81.0" layoutY="65.0" prefHeight="31.0" prefWidth="276.0">
 			<font>
 				<Font size="15.0" />
 			</font>
 		</TextField>
       <Text fill="#24283f" layoutX="140.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="203.158203125" />
-      <Label layoutX="24.0" layoutY="68.0" text="UserName">
+      <Label layoutX="24.0" layoutY="68.0" text="Name">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <VBox fx:id="listFriendVbox" layoutX="24.0" layoutY="116.0" prefHeight="291.0" prefWidth="333.0" />
+      <ListView fx:id="lvAllUser" layoutX="24.0" layoutY="116.0" prefHeight="291.0" prefWidth="333.0" />
 	</children>
 
 </AnchorPane>

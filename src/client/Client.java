@@ -5,6 +5,7 @@ import java.net.Socket;
 
 import javax.security.auth.login.LoginContext;
 
+import application.AddFriendController;
 import application.LoginRegisterController;
 import application.MainController;
 import interfaces.ReceiveResponseListener;
@@ -89,6 +90,10 @@ public class Client {
 	public Relationship requestGetRelationship(ReceiveResponseListener listener) {
 		
 		return null;
+	}
+
+	public void setAddFriendController(AddFriendController addFriendController) {
+		this.getClientConnection().setAddFriendController(addFriendController);
 	}
 
 }

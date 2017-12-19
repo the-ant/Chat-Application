@@ -4,10 +4,17 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
+
+import org.json.JSONObject;
+
+import application.AddFriendController;
 import application.LoginRegisterController;
 import application.MainController;
 import javafx.application.Platform;
 import pojo.FlagConnection;
+import pojo.User;
+import utils.JSONUtils;
 
 public class ClientConnection extends Thread {
 
@@ -17,6 +24,7 @@ public class ClientConnection extends Thread {
 	private boolean running = true;
 	private LoginRegisterController loginRegisterController;
 	private MainController mainController;
+	private AddFriendController addFriendController;
 
 	public ClientConnection(LoginRegisterController controller, Socket socket) {
 		this.socket = socket;
@@ -33,8 +41,9 @@ public class ClientConnection extends Thread {
 	public void run() {
 		try {
 			while (running) {
-				while (dataIn.available() == 0)
-					;
+				while (dataIn.available() == 0) {
+					Thread.sleep(1);
+				}
 
 				String msg = dataIn.readUTF();
 				System.out.println("--> Receive from server: " + msg);
@@ -45,7 +54,7 @@ public class ClientConnection extends Thread {
 				}
 			}
 			close();
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			System.out.println(e.toString());
 			close();
 		}
@@ -154,9 +163,29 @@ public class ClientConnection extends Thread {
 		case FlagConnection.GET_ALL_USER:
 			receiveResponseGetAllUser(frameMsg[1]);
 			break;
+		case FlagConnection.REQUEST_ADD_FRIEND:
+			int userId = Integer.parseInt(frameMsg[1]);
+			receiveRequestAddFriends(userId, frameMsg[2]);
+			break;
+		case FlagConnection.UPDATE_REQUEST_ADD_FRIEND:
+			if (!frameMsg[1].isEmpty()) {
+				System.out.println("list requests: " + frameMsg[1]);
+				updateRequestAddFriend(frameMsg[1]);
+			}
+			break;
+			// catch error.
+			
 		}
 	}
-
+	private void updateRequestAddFriend(String listOfRequests) {
+		if (listOfRequests.contains("all_requests")) {
+			JSONObject allRequestObj = JSONUtils.parseJSON(listOfRequests);
+			List<User> allRequestUsers = JSONUtils.parseAllUserRequests(allRequestObj.getJSONArray("all_requests"));
+			Platform.runLater(() -> mainController.updateListOfRequests(allRequestUsers));
+		} else {
+			Platform.runLater(() -> mainController.updateListOfRequests(null));
+		}
+	}
 	private void receiveResponseAddGroup(int response) {
 		if (response == 1) {
 			System.out.println("Tao Group Thanh Cong");
@@ -165,9 +194,15 @@ public class ClientConnection extends Thread {
 			System.out.println("Tao Group That Bai");
 		}
 	}
-
+	private void receiveRequestAddFriends(int userId, String fullName) {
+		if (userId > 0 && !fullName.isEmpty()) {
+			Platform.runLater(() -> mainController.receiveRequestFriends(userId, fullName));
+		}
+	}
 	private void receiveResponseGetAllUser(String response) {
-		
+		JSONObject allUserObj = JSONUtils.parseJSON(response);
+		List<User> allUser = JSONUtils.parseAllUser(allUserObj.getJSONArray("all_user"));
+		Platform.runLater(() -> addFriendController.setAllUser(allUser));
 	}
 	
 	private void receiveResponseAddFriend(int response) {
@@ -183,7 +218,6 @@ public class ClientConnection extends Thread {
 	}
 
 	private void receiveResponseGetMessage(int groupId, String response) {
-		// int mainController.getSelectedGroup()
 	}
 
 	private void receiveResponseSendMessage(int response) {
@@ -252,5 +286,9 @@ public class ClientConnection extends Thread {
 				e1.printStackTrace();
 			}
 		}
+	}
+
+	public void setAddFriendController(AddFriendController addFriendController) {
+		this.addFriendController = addFriendController;
 	}
 }

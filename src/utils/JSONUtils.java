@@ -73,4 +73,41 @@ public class JSONUtils {
 		}
 		return result;
 	}
+
+	public static List<User> parseAllUser(JSONArray jsonArray) {
+		List<User> result = new ArrayList<>();
+		if (jsonArray.length() > 0) {
+			for(int i = 0; i < jsonArray.length(); i++) {
+				JSONObject userObj = jsonArray.getJSONObject(i);
+				User user = parseUserFromJSONObject(userObj);
+				if (user != null) {
+					result.add(user);
+				}
+			}
+		}
+		return result;
+	}
+	public static List<User> parseAllUserRequests(JSONArray array) {
+		List<User> result = new ArrayList<>();
+		if (array.length() > 0) {
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject requestObj = array.getJSONObject(i);
+				User user = parseUserRequestFromJSONObject(requestObj);
+				if (user != null) {
+					result.add(user);
+				}
+			}
+		}
+		return result;
+	}
+
+	public static User parseUserRequestFromJSONObject(JSONObject requestObj) {
+		User result = null;
+		if (requestObj != null) {
+			int userId = requestObj.getInt(StructureDB.USER_ID);
+			String fullname = requestObj.getString(StructureDB.USER_FULLNAME);
+			result = new User(userId, fullname);
+		}
+		return result;
+	}
 }

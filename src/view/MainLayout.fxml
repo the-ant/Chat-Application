@@ -96,11 +96,51 @@
 				<Insets left="-1.0" top="-1.0" />
 			</BorderPane.margin>
 			<center>
-				<ListView fx:id="lvGroups" fixedCellSize="60.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets top="10.0" />
-               </BorderPane.margin></ListView>
+            <StackPane fx:id="listViewStackPane">
+               <children>
+                  <ListView fx:id="lvUsers" prefHeight="200.0" prefWidth="200.0" />
+      				<ListView fx:id="lvGroups" fixedCellSize="60.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets top="10.0" />
+                     </BorderPane.margin>
+                  </ListView>
+               </children>
+            </StackPane>
 			</center>
+         <bottom>
+            <GridPane BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="47.0" valignment="CENTER" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <HBox fx:id="homeHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: rgb(249, 249, 249);">
+                     <children>
+                        <ImageView fx:id="homeChatImageView" fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/home_selected.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="confirmFriendsHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: rgb(249, 249, 249);" GridPane.columnIndex="1">
+                     <children>
+                        <ImageView fx:id="confirmFriendsImageView" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/invite_black.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </HBox>
+               </children>
+            </GridPane>
+         </bottom>
 		</BorderPane>
 	</left>
 	<center>
