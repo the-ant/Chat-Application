@@ -173,9 +173,17 @@ public class ClientConnection extends Thread {
 				updateRequestAddFriend(frameMsg[1]);
 			}
 			break;
-			// catch error.
-			
+		case FlagConnection.UPDATE_RELATIONSHIP:
+			if (!frameMsg[1].isEmpty()) {
+				updateListViewForMainController(frameMsg[1]);
+				Platform.runLater(() -> mainController.updateListView(frameMsg[1]));
+			}
+			break;
 		}
+	}
+	
+	private void updateListViewForMainController(String relationship) {
+		
 	}
 	private void updateRequestAddFriend(String listOfRequests) {
 		if (listOfRequests.contains("all_requests")) {

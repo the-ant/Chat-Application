@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import client.Client;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -92,14 +93,12 @@ public class MainController implements Initializable {
 	private void initListFriend() {
 		homeChatImageView.setOnMouseClicked(e -> {
 			selectedHomeChat();
-			
-			
+			changeTop();
 		});
 		
 		confirmFriendsHBox.setOnMouseClicked(e -> {
 			selectedConfirmFriends();
-			
-			
+			changeTop();
 		});
 		
 		setDataForListFriends(me.getRelationship());
@@ -109,7 +108,7 @@ public class MainController implements Initializable {
 	}
 
 	private void selectedConfirmFriends() {
-		changeTop();
+		
 		homeHBox.setStyle("-fx-background-color: rgb(249, 249, 249)");
 		homeChatImageView.setImage(new Image("/images/home_black.png"));
 		
@@ -251,9 +250,12 @@ public class MainController implements Initializable {
 			newTopNode.setVisible(true);
 		}
 	}
-	public static void handleConfirmRequest(int userIdRequest) {
-		if (userIdRequest > 0) {
-			
-		}
+	public void updateListView(String relationship) {
+		me.setRelationship(relationship);
+		this.listGroups.clear();
+		this.listFriends.clear();
+		setDataForListFriends(relationship);
+		lvGroups.setItems(listGroups);
+		lvGroups.setCellFactory(lv -> new CustomListCellGroup(listFriends, me.getUser_id()));
 	}
 }

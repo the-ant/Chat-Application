@@ -30,6 +30,7 @@ public class AddFriendController implements Initializable {
 	ListView<User> lvAllUser;
 
 	private Client client = Client.getInstance();
+	@SuppressWarnings("unused")
 	private CurrentUser me = CurrentUser.getInstance();
 	private ObservableList<User> listAllUser = FXCollections.observableArrayList();
 

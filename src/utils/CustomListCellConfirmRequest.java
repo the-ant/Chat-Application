@@ -1,9 +1,7 @@
 package utils;
 
 
-import application.MainController;
 import client.Client;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -19,7 +17,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
-import pojo.CurrentUser;
 import pojo.FlagConnection;
 import pojo.User;
 

@@ -16,4 +16,5 @@ public class FlagConnection {
 	public static final int DELETE_REQUEST_RECORD = REQUEST_ADD_FRIEND + 1;
 	public static final int UPDATE_REQUEST_ADD_FRIEND = DELETE_REQUEST_RECORD + 1;
 	public static final int GET_ALL_REQUESTS = UPDATE_REQUEST_ADD_FRIEND + 1;
+	public static final int UPDATE_RELATIONSHIP = GET_ALL_REQUESTS + 1;
 }
