@@ -38,6 +38,12 @@ public class User {
 		this.online = online;
 	}
 
+	public User(int id, String fullname) {
+		this.id = id;
+		this.setFullname(fullname);
+	}
+
+
 	public int getId() {
 		return id;
 	}

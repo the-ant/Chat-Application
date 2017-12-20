@@ -89,5 +89,26 @@
     -fx-text-fill: -fx-selection-bar-text;
 }
 
+#lvComfirmRequest {
+    -fx-background-color: transparent;
+  -fx-background-insets: 0.0;
+  -fx-padding: 0.0;
+}
+
+#lvComfirmRequest .list-cell {
+    -fx-background-color: transparent;
+}
+
+#lvComfirmRequest .list-cell:odd {
+    -fx-background-color: transparent;
+}
+
+#lvComfirmRequest .list-cell:filled:focused:selected {
+    -fx-background-color: rgb(242, 242, 242);
+    -fx-background: -fx-accent;
+    -fx-background: -fx-accent;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+
 
 

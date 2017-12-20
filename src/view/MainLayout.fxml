@@ -13,7 +13,7 @@
 
 <BorderPane prefHeight="600.0" prefWidth="1080.0" style="-fx-background-color: white;" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
 	<left>
-		<BorderPane prefHeight="601.0" prefWidth="286.0" style="-fx-background-color: rgb(249, 249, 249); -fx-border-color: rgb(178, 178, 178);" BorderPane.alignment="CENTER">
+		<BorderPane prefHeight="601.0" prefWidth="286.0" style="-fx-background-color: rgb(230, 234, 237); -fx-border-color: rgb(178, 178, 178);" BorderPane.alignment="CENTER">
 			<top>
 				<GridPane prefHeight="120.0" prefWidth="343.0">
 					<columnConstraints>
@@ -96,20 +96,46 @@
 				<Insets bottom="-1.0" left="-1.0" top="-1.0" />
 			</BorderPane.margin>
 			<center>
-				<ListView fx:id="lvGroups" fixedCellSize="60.0" prefHeight="471.0" prefWidth="308.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets top="10.0" />
-               </BorderPane.margin></ListView>
+            <StackPane fx:id="listViewStackPane">
+               <children>
+                  <ListView fx:id="lvComfirmRequest" prefHeight="200.0" prefWidth="200.0" />
+      				<ListView fx:id="lvGroups" fixedCellSize="60.0" prefHeight="471.0" prefWidth="308.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets top="10.0" />
+                     </BorderPane.margin>
+                  </ListView>
+               </children>
+            </StackPane>
 			</center>
          <bottom>
-            <GridPane prefHeight="47.0" prefWidth="284.0" BorderPane.alignment="CENTER">
+            <GridPane prefHeight="50.0" prefWidth="284.0" BorderPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="47.0" prefHeight="47.0" vgrow="SOMETIMES" />
               </rowConstraints>
+               <children>
+                  <HBox fx:id="homeHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;">
+                     <children>
+                        <ImageView fx:id="homeChatImageView" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/home_selected.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="confirmFriendsHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="1">
+                     <children>
+                        <ImageView fx:id="confirmFriendsImageView" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/invite_black.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
             </GridPane>
          </bottom>
 		</BorderPane>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 
+import application.AddFriendController;
 import application.LoginRegisterController;
 import interfaces.ReceiveResponseListener;
 
@@ -99,12 +100,15 @@ public class Client {
 	public void downloadFile(String requestDownLoadFile, File file, String imgName) {
 		try {
 			Socket dlSocket = new Socket(IP_ADDRESS, PORT);
-			Thread dlFileThread = new Thread(
-					new DownloadFileRunnable(requestDownLoadFile, dlSocket, file, imgName));
+			Thread dlFileThread = new Thread(new DownloadFileRunnable(requestDownLoadFile, dlSocket, file, imgName));
 			dlFileThread.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void setAddFriendController(AddFriendController addFriendController) {
+		this.getClientConnection().setAddFriendController(addFriendController);
 	}
 
 }

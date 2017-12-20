@@ -8,11 +8,13 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import application.AddFriendController;
 import application.LoginRegisterController;
 import application.MainController;
 import javafx.application.Platform;
 import pojo.FlagConnection;
 import pojo.Message;
+import pojo.User;
 import utils.JSONUtils;
 
 public class ClientConnection extends Thread {
@@ -23,6 +25,7 @@ public class ClientConnection extends Thread {
 	private boolean running = true;
 	private LoginRegisterController loginRegisterController;
 	private MainController mainController;
+	private AddFriendController addFriendController;
 
 	public ClientConnection(LoginRegisterController controller, Socket socket) {
 		this.socket = socket;
@@ -59,18 +62,18 @@ public class ClientConnection extends Thread {
 	private void handleFrameReceive(int options, String msg) {
 		if (options != 0) {
 			switch (options) {
-				case 1:
-					alertNotExistUsername(msg);
-					break;
-				case 2:
-					handleLoginSuccessful(msg);
-					break;
-				case 3:
-					handleLoginUnsuccessful(msg);
-					break;
-				case 4:
-					alertExistUsernameRegister(msg);
-					break;
+			case 1:
+				alertNotExistUsername(msg);
+				break;
+			case 2:
+				handleLoginSuccessful(msg);
+				break;
+			case 3:
+				handleLoginUnsuccessful(msg);
+				break;
+			case 4:
+				alertExistUsernameRegister(msg);
+				break;
 			}
 		} else {
 			String[] frameMsg = msg.split("[|]");
@@ -98,12 +101,12 @@ public class ClientConnection extends Thread {
 
 	private void alertNotExistUsername(String msg) {
 		String msgError = msg.substring(msg.indexOf("-") + 1);
-		
+
 		if (!msgError.isEmpty() || msg != null) {
 			setTextAlertErrorLoginFom("That username don't exist. Try again?");
 		}
 	}
-	
+
 	private void handleLoginSuccessful(String msg) {
 		String[] inforUser = msg.substring(msg.indexOf(":") + 1).split("-");
 		System.out.println("handleLoginSuccessful: " + msg);
@@ -140,14 +143,6 @@ public class ClientConnection extends Thread {
 			receiveResponseGetMessage(groupId, msg);
 			break;
 
-		case FlagConnection.ADD_FRIEND:
-			receiveResponseAddFriend(Integer.parseInt(frameMsg[1]));
-			break;
-
-		case FlagConnection.ADD_GROUP:
-			receiveResponseAddGroup(Integer.parseInt(frameMsg[1]));
-			break;
-
 		case FlagConnection.RECEIVE_MESSAGE:
 			int receiveGroupId = Integer.parseInt(frameMsg[1]);
 			int senderId = Integer.parseInt(frameMsg[2]);
@@ -155,20 +150,66 @@ public class ClientConnection extends Thread {
 			boolean isFile = Boolean.parseBoolean(frameMsg[4]);
 			receiveMessage(receiveGroupId, senderId, receiveMsg, isFile);
 			break;
-			
+
 		case FlagConnection.NOTIFY_ONLINE:
 			int onlineUserId = Integer.parseInt(frameMsg[1]);
 			notifyOnlineFriend(onlineUserId);
 			break;
-			
+
 		case FlagConnection.NOTIFY_LOGOUT:
 			int logoutUserId = Integer.parseInt(frameMsg[1]);
 			notifyLogoutFriend(logoutUserId);
 			break;
-			
+
 		case FlagConnection.SEND_FILE:
 			break;
+
+		case FlagConnection.GET_ALL_USER:
+			receiveResponseGetAllUser(frameMsg[1]);
+			break;
+
+		case FlagConnection.REQUEST_ADD_FRIEND:
+			int userId = Integer.parseInt(frameMsg[1]);
+			receiveRequestAddFriends(userId, frameMsg[2]);
+			break;
+
+		case FlagConnection.UPDATE_REQUEST_ADD_FRIEND:
+			if (!frameMsg[1].isEmpty()) {
+				System.out.println("list requests: " + frameMsg[1]);
+				updateRequestAddFriend(frameMsg[1]);
+			}
+			break;
+
+		case FlagConnection.UPDATE_RELATIONSHIP:
+			if (!frameMsg[1].isEmpty()) {
+				Platform.runLater(() -> mainController.updateListView(frameMsg[1]));
+			}
+			break;
+			
 		}
+	}
+
+	private void updateRequestAddFriend(String listOfRequests) {
+		if (listOfRequests.contains("all_requests")) {
+			JSONObject allRequestObj = JSONUtils.parseJSON(listOfRequests);
+			List<User> allRequestUsers = JSONUtils.parseAllUserRequests(allRequestObj.getJSONArray("all_requests"));
+			Platform.runLater(() -> mainController.updateListOfRequests(allRequestUsers));
+		} else {
+			Platform.runLater(() -> mainController.updateListOfRequests(null));
+		}
+	}
+
+	private void receiveRequestAddFriends(int userId, String fullName) {
+		if (userId > 0 && !fullName.isEmpty()) {
+			Platform.runLater(() -> mainController.receiveRequestFriends(userId, fullName));
+		}
+	}
+
+	private void receiveResponseGetAllUser(String response) {
+		JSONObject allUserObj = JSONUtils.parseJSON(response);
+		List<User> allUser = JSONUtils.parseAllUser(allUserObj.getJSONArray("all_user"));
+		System.out.println("receiveResponseGetAllUser: " + response);
+		Platform.runLater(() -> addFriendController.setAllUser(allUser));
 	}
 
 	private void notifyLogoutFriend(int logoutUserId) {
@@ -181,14 +222,6 @@ public class ClientConnection extends Thread {
 
 	private void receiveMessage(int groupId, int senderId, String msg, boolean isFile) {
 		Platform.runLater(() -> mainController.setMessageToGroupById(groupId, senderId, msg, isFile));
-	}
-
-	private void receiveResponseAddGroup(int response) {
-
-	}
-
-	private void receiveResponseAddFriend(int response) {
-
 	}
 
 	private void receiveResponseGetMessage(int groupId, String response) {
@@ -254,5 +287,8 @@ public class ClientConnection extends Thread {
 			}
 		}
 	}
-}
 
+	public void setAddFriendController(AddFriendController addFriendController) {
+		this.addFriendController = addFriendController;
+	}
+}

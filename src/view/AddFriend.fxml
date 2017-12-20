@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="478.0" prefWidth="380.0"
+	style="-fx-background-color: #FFFFFF;" stylesheets="@../css/addmenu.css"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="application.AddFriendController">
+	<children>
+		<Label layoutX="140.0" layoutY="18.0" text="Add Friend"
+			textFill="#24283f">
+			<font>
+				<Font size="20.0" />
+			</font>
+		</Label>
+		<Button fx:id="addFriendBtn" contentDisplay="CENTER" layoutX="24.0"
+			layoutY="420.0" mnemonicParsing="false" onAction="#handleAddNewFriend"
+			prefHeight="40.0" prefWidth="92.0" text="Add" />
+		<TextField fx:id="tfNewFriend" layoutX="81.0" layoutY="65.0"
+			prefHeight="31.0" prefWidth="276.0">
+			<font>
+				<Font size="15.0" />
+			</font>
+		</TextField>
+		<Text fill="#24283f" layoutX="140.0" layoutY="150.0" strokeType="OUTSIDE"
+			strokeWidth="0.0" wrappingWidth="203.158203125" />
+		<Label layoutX="24.0" layoutY="68.0" text="Name">
+			<font>
+				<Font size="16.0" />
+			</font>
+		</Label>
+		<ListView fx:id="lvAllUser" layoutX="24.0" layoutY="116.0"
+			prefHeight="291.0" prefWidth="333.0" />
+	</children>
+
+</AnchorPane>

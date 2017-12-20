@@ -17,12 +17,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
@@ -39,10 +44,12 @@ import pojo.User;
 import traynotification.AnimationType;
 import traynotification.NotificationType;
 import traynotification.TrayNotification;
+import utils.CustomListCellConfirmRequest;
 import utils.CustomListCellGroup;
 import utils.CustomListCellMessage;
 import utils.JSONUtils;
 import utils.PlaceHolderUtil;
+import utils.PopOverAddMenu;
 
 public class MainController implements Initializable {
 	@FXML
@@ -50,17 +57,25 @@ public class MainController implements Initializable {
 	@FXML
 	private ListView<Message> lvMessage;
 	@FXML
+	private ListView<User> lvComfirmRequest;
+	@FXML
 	private Circle mAvatarCircle, groupAvatarCircle;
 	@FXML
 	private TextField tfSearch, tfTypeMessage;
 	@FXML
 	private Text fullnameText, avatarText, friendChatNameText, friendChatStatusText, groupNameText;
 	@FXML
-	private ImageView sendMessage, sendFileImageView;
+	private ImageView sendMessage, sendFileImageView, addFriendsBtn;
 	@FXML
 	private GridPane controlChatGridPane, infoSelectedFriendOrGroupChatGridPane;
 	@FXML
 	private MenuItem logoutMenuItem;
+	@FXML
+	private HBox homeHBox, confirmFriendsHBox;
+	@FXML
+	private ImageView homeChatImageView, confirmFriendsImageView;
+	@FXML
+	private StackPane listViewStackPane;
 
 	private Stage primaryStage = Main.getPrimaryStage();
 	private Client client = Client.getInstance();
@@ -68,6 +83,7 @@ public class MainController implements Initializable {
 
 	private ObservableList<Group> listGroups = FXCollections.observableArrayList();
 	private ObservableList<Message> listMessages = FXCollections.observableArrayList();
+	private ObservableList<User> users = FXCollections.observableArrayList();
 	private List<User> listFriends;
 
 	private Message newMsg;
@@ -80,6 +96,7 @@ public class MainController implements Initializable {
 		initMessage();
 		initStage();
 		initSearchGrouops();
+		initAddMenu();
 	}
 
 	private void initStage() {
@@ -127,15 +144,73 @@ public class MainController implements Initializable {
 		client.getClientConnection().setMainController(this);
 	}
 
+	public void initAddMenu() {
+		addFriendsBtn.setOnMouseClicked(event -> {
+			System.out.println("initAddMenu: ");
+			final ContextMenu contextMenu = new ContextMenu();
+			final MenuItem itemAddFriend = new MenuItem("Add new friend");
+			final MenuItem itemNewGroup = new MenuItem("Add new group");
+			contextMenu.getItems().addAll(itemAddFriend, itemNewGroup);
+
+			addFriendsBtn.setOnContextMenuRequested(e -> {
+				contextMenu.show(addFriendsBtn, e.getScreenX(), e.getScreenY());
+			});
+
+			PopOverAddMenu popOverAddMenu = new PopOverAddMenu();
+			itemNewGroup.setOnAction(e -> {
+				popOverAddMenu.showPopOverNewGroup(addFriendsBtn);
+			});
+			itemAddFriend.setOnAction(e -> {
+				popOverAddMenu.showPopOverAddFriend(addFriendsBtn);
+			});
+		});
+	}
+
 	private void initListFriend() {
 		setDataForListFriends(me.getRelationship());
+		
 		lvGroups.setItems(listGroups);
 		lvGroups.setCellFactory(lv -> new CustomListCellGroup(listFriends, me.getUser_id()));
 		lvGroups.setPlaceholder(PlaceHolderUtil.createPlaceHolderGroup());
+		
 		lvGroups.setOnMouseClicked(e -> {
 			showControlAndInfoChatMessage();
 			loadMsgs();
 		});
+
+		homeHBox.setOnMouseClicked(e -> {
+			client.send(FlagConnection.GET_ALL_REQUESTS + "|");
+			selectedHomeChat();
+			changeTop();
+		});
+
+		confirmFriendsHBox.setOnMouseClicked(e -> {
+			client.send(FlagConnection.GET_ALL_REQUESTS + "|");
+			selectedConfirmFriends();
+			changeTop();
+		});
+		
+	}
+
+	private void selectedConfirmFriends() {
+
+		homeHBox.setStyle("-fx-background-color: rgb(249, 249, 249)");
+		homeChatImageView.setImage(new Image("/images/home_black.png"));
+
+		confirmFriendsHBox.setStyle("-fx-background-color:  white");
+		confirmFriendsImageView.setImage(new Image("/images/invite_selected.png"));
+
+		lvComfirmRequest.setItems(users);
+		lvComfirmRequest.setCellFactory(lv -> new CustomListCellConfirmRequest());
+		lvComfirmRequest.getSelectionModel().select(0);
+	}
+
+	private void selectedHomeChat() {
+		homeHBox.setStyle("-fx-background-color: white");
+		homeChatImageView.setImage(new Image("/images/home_selected.png"));
+
+		confirmFriendsHBox.setStyle("-fx-background-color:  rgb(249, 249, 249)");
+		confirmFriendsImageView.setImage(new Image("/images/invite_black.png"));
 	}
 
 	private void loadMsgs() {
@@ -192,6 +267,7 @@ public class MainController implements Initializable {
 		Group selectedGroup = getSelectedGroup();
 		String desId = getDesFriendId(selectedGroup);
 		String requestMsg = FlagConnection.SEND_MESSAGE + "|" + selectedGroup.getId() + "|" + desId + "|" + msg;
+		System.out.println("sendMessageTo: " + requestMsg);
 		client.send(requestMsg);
 	}
 
@@ -522,5 +598,43 @@ public class MainController implements Initializable {
 				break;
 			}
 		return result;
+	}
+
+	public void receiveRequestFriends(int userId, String fullName) {
+		User user = new User(userId, fullName);
+		this.users.add(user);
+		lvComfirmRequest.setCellFactory(lv -> new CustomListCellConfirmRequest());
+	}
+
+	private void changeTop() {
+		ObservableList<Node> childs = this.listViewStackPane.getChildren();
+		if (childs.size() > 1) {
+			Node topNode = childs.get(childs.size() - 1);
+			Node newTopNode = childs.get(childs.size() - 2);
+			topNode.setVisible(false);
+			topNode.toBack();
+			newTopNode.setVisible(true);
+		}
+	}
+
+	public void updateListView(String relationship) {
+		me.setRelationship(relationship);
+		listGroups.clear();
+		listFriends.clear();
+
+		setDataForListFriends(relationship);
+		lvGroups.setItems(listGroups);
+		lvGroups.setCellFactory(lv -> new CustomListCellGroup(listFriends, me.getUser_id()));
+	}
+
+	public void updateListOfRequests(List<User> allRequestUsers) {
+		users.clear();
+		if (allRequestUsers != null) {
+			users.addAll(allRequestUsers);
+			lvComfirmRequest.setItems(users);
+			lvComfirmRequest.setCellFactory(lv -> new CustomListCellConfirmRequest());
+		} else {
+			lvComfirmRequest.setItems(users);
+		}
 	}
 }
