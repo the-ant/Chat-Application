@@ -34,13 +34,6 @@ public final class TrayNotification {
     private TrayAnimation animator;
     private AnimationProvider animationProvider;
 
-    /**
-     * Initializes an instance of the tray notification object
-     * @param title The title text to assign to the tray
-     * @param body The body text to assign to the tray
-     * @param img The image to show on the tray
-     * @param rectangleFill The fill for the rectangle
-     */
     public TrayNotification(String title, String body, Image img, Paint rectangleFill) {
         initTrayNotification(title, body, NotificationType.CUSTOM);
 
@@ -48,19 +41,10 @@ public final class TrayNotification {
         setRectangleFill(rectangleFill);
     }
 
-    /**
-     * Initializes an instance of the tray notification object
-     * @param title The title text to assign to the tray
-     * @param body The body text to assign to the tray
-     * @param notificationType The notification type to assign to the tray
-     */
     public TrayNotification(String title, String body, NotificationType notificationType ) {
         initTrayNotification(title, body, notificationType);
     }
-
-    /**
-     * Initializes an empty instance of the tray notification
-     */
+    
     public TrayNotification() {
         initTrayNotification("", "", NotificationType.CUSTOM);
     }
@@ -88,7 +72,6 @@ public final class TrayNotification {
         animationProvider =
             new AnimationProvider(new FadeAnimation(stage), new SlideAnimation(stage), new PopupAnimation(stage));
 
-        //Default animation type
         setAnimationType(AnimationType.SLIDE);
     }
 
@@ -112,12 +95,12 @@ public final class TrayNotification {
         switch (nType) {
 
             case USERONLINE:
-                imageLocation = getClass().getResource("/images/useronline.png");
+                imageLocation = getClass().getResource("/images/notification.png");
                 paintHex = "#2C54AB";
                 break;
 
             case NEWMESSAGE:
-                imageLocation = getClass().getResource("/images/newmessage2.png");
+                imageLocation = getClass().getResource("/images/new_msg.png");
                 paintHex = "#8D9695";
                 break;
             case CUSTOM:

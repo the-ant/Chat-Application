@@ -1,6 +1,6 @@
 
 .menu-item:focused{
-     -fx-background-color: rgb(99, 99, 99);
+     -fx-background-color: rgb(99.0, 99.0, 99.0);
 }
 
 .menu-button {
@@ -11,11 +11,16 @@
     -fx-background-color: #2f2f7a;
 }
 
+#tfTypeMessage{
+  -fx-font-size: 15.0;
+  -fx-background-color: transparent;
+  -fx-padding: 3.0, 8.0, 3.0, 8.0;
+}
 
 #tfSearch
 {
   -fx-font-size: 14.0;
-    -fx-background-color: transparent;
+  -fx-background-color: transparent;
   -fx-background-radius: 4.0;
   -fx-padding: 3.0, 5.0, 3.0, 5.0;
 }
@@ -78,7 +83,7 @@
 }
 
 #lvGroups .list-cell:filled:focused:selected {
-    -fx-background-color: rgb(226.0, 226.0, 226.0);
+    -fx-background-color: rgb(242, 242, 242);
     -fx-background: -fx-accent;
     -fx-background: -fx-accent;
     -fx-text-fill: -fx-selection-bar-text;

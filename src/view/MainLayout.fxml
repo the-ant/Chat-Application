@@ -13,7 +13,7 @@
 
 <BorderPane prefHeight="600.0" prefWidth="1080.0" style="-fx-background-color: white;" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
 	<left>
-		<BorderPane prefHeight="601.0" prefWidth="286.0" style="-fx-background-color: rgb(249, 249, 249);" BorderPane.alignment="CENTER">
+		<BorderPane prefHeight="601.0" prefWidth="286.0" style="-fx-background-color: rgb(249, 249, 249); -fx-border-color: rgb(178, 178, 178);" BorderPane.alignment="CENTER">
 			<top>
 				<GridPane prefHeight="120.0" prefWidth="343.0">
 					<columnConstraints>
@@ -64,21 +64,21 @@
                         <StackPane>
                            <children>
                   								<Circle fx:id="mAvatarCircle" fill="#7c9cbc" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="SN">
+                              <Text fx:id="avatarText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="SN">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Text>
                            </children>
                         </StackPane>
-                        <Text fx:id="textName" strokeType="OUTSIDE" strokeWidth="0.0" text="Sơn Nguyễn">
+                        <Text fx:id="fullnameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Sơn Nguyễn">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Text>
                         <MenuButton mnemonicParsing="false">
                           <items>
-                            <MenuItem mnemonicParsing="false" text="Đăng Xuất" />
+                            <MenuItem fx:id="logoutMenuItem" mnemonicParsing="false" text="Đăng Xuất" />
                           </items>
                         </MenuButton>
                      </children>
@@ -93,7 +93,7 @@
 				</GridPane>
 			</top>
 			<BorderPane.margin>
-				<Insets left="-1.0" top="-1.0" />
+				<Insets bottom="-1.0" left="-1.0" top="-1.0" />
 			</BorderPane.margin>
 			<center>
 				<ListView fx:id="lvGroups" fixedCellSize="60.0" prefHeight="471.0" prefWidth="308.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
@@ -101,12 +101,23 @@
                   <Insets top="10.0" />
                </BorderPane.margin></ListView>
 			</center>
+         <bottom>
+            <GridPane prefHeight="47.0" prefWidth="284.0" BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </bottom>
 		</BorderPane>
 	</left>
 	<center>
 		<BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<center>
-				<ListView fx:id="lvMessage" focusTraversable="false" prefHeight="472.0" prefWidth="774.0" BorderPane.alignment="CENTER">
+				<ListView fx:id="lvMessage" prefHeight="472.0" prefWidth="774.0" BorderPane.alignment="CENTER">
 					<BorderPane.margin>
 						<Insets top="-1.0" />
 					</BorderPane.margin>
@@ -116,45 +127,45 @@
 				</ListView>
 			</center>
 			<bottom>
-				<GridPane prefHeight="51.0" prefWidth="639.0" BorderPane.alignment="CENTER">
+				<GridPane fx:id="controlChatGridPane" prefHeight="51.0" prefWidth="639.0" style="-fx-border-color: rgb(221, 221, 221);" BorderPane.alignment="CENTER">
 					<columnConstraints>
 						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="601.0" />
 						<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="136.0" minWidth="10.0" prefWidth="136.0" />
 					</columnConstraints>
 					<rowConstraints>
-                  <RowConstraints maxHeight="20.0" minHeight="4.0" prefHeight="4.0" vgrow="SOMETIMES" />
-						<RowConstraints maxHeight="20.0" minHeight="0.0" prefHeight="0.0" valignment="CENTER" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 					<children>
-						<TextField fx:id="tfTypeMessage" prefHeight="49.0" promptText="Nhập tin nhắn..." style="-fx-background-color: white;" GridPane.rowIndex="2">
+						<TextField fx:id="tfTypeMessage" prefHeight="49.0" promptText="Nhập tin nhắn..." style="-fx-border-color: white;">
 							<font>
 								<Font size="14.0" />
 							</font>
+                     <GridPane.margin>
+                        <Insets bottom="-1.0" left="-1.0" />
+                     </GridPane.margin>
 						</TextField>
-						<HBox alignment="CENTER" prefHeight="49.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+						<HBox alignment="CENTER" prefHeight="49.0" spacing="10.0" GridPane.columnIndex="1">
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
 									<image>
 										<Image url="@../images/add_image.png" />
 									</image>
 								</ImageView>
-								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+								<ImageView fx:id="sendFileImageView" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
 									<image>
 										<Image url="@../images/attachment.png" />
 									</image>
 								</ImageView>
-								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+								<ImageView fx:id="sendMessage" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
 									<image>
 										<Image url="@../images/send.png" />
 									</image>
 								</ImageView>
 							</children>
 						</HBox>
-                  <Line endX="741.0" stroke="#e7e7e7" GridPane.rowIndex="1" />
 					</children>
 					<BorderPane.margin>
-						<Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0" />
+						<Insets bottom="-1.0" right="-1.0" top="-1.0" />
 					</BorderPane.margin>
 				</GridPane>
 			</bottom>
@@ -162,9 +173,9 @@
 				<Insets top="-1.0" />
 			</BorderPane.margin>
          <top>
-            <GridPane>
+            <GridPane fx:id="infoSelectedFriendOrGroupChatGridPane" style="-fx-background-color: rgb(249, 249, 249); -fx-border-color: rgb(178, 178, 178);">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="940.0" minWidth="10.0" prefWidth="679.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="679.0" />
                   <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
                </columnConstraints>
                <rowConstraints>
@@ -177,12 +188,12 @@
                            <children>
                               <StackPane>
                                  <children>
-                                    <Circle fill="#e4879e" radius="36.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                    <Circle fx:id="groupAvatarCircle" fill="#e4879e" radius="36.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
                                        <GridPane.margin>
                                           <Insets left="10.0" />
                                        </GridPane.margin>
                                     </Circle>
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="HL">
+                                    <Text fx:id="groupNameText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="HL">
                                        <font>
                                           <Font size="26.0" />
                                        </font>
@@ -191,12 +202,12 @@
                               </StackPane>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="2.0">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hằng Lùn">
+                                    <Text fx:id="friendChatNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Hằng Lùn">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
                                     </Text>
-                                    <Text fill="#9d9d9d" strokeType="OUTSIDE" strokeWidth="0.0" text="online">
+                                    <Text fx:id="friendChatStatusText" fill="#9d9d9d" strokeType="OUTSIDE" strokeWidth="0.0" text="online">
                                        <VBox.margin>
                                           <Insets left="5.0" />
                                        </VBox.margin>
@@ -209,11 +220,7 @@
                               <Insets left="10.0" />
                            </padding>
                         </HBox>
-                        <AnchorPane maxWidth="940.0">
-                           <children>
-                              <Line endX="741.0" stroke="#e7e7e7" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.rowIndex="1" VBox.vgrow="ALWAYS" />
-                           </children>
-                        </AnchorPane>
+                        <AnchorPane maxWidth="940.0" />
                      </children>
                   </VBox>
                   <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
@@ -225,6 +232,9 @@
                      </GridPane.margin>
                   </ImageView>
                </children>
+               <BorderPane.margin>
+                  <Insets left="-1.0" right="-1.0" top="-1.0" />
+               </BorderPane.margin>
             </GridPane>
          </top>
 		</BorderPane>

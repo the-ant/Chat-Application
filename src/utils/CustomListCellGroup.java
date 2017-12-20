@@ -6,6 +6,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -53,14 +55,22 @@ public class CustomListCellGroup extends ListCell<Group> {
 			VBox title = new VBox();
 			title.setAlignment(Pos.CENTER_LEFT);
 			title.setSpacing(2);
+
 			Text nameGroup = new Text(name);
 			nameGroup.setFont(new Font("System", 18));
-			Text content = new Text(name);
-			content.setFill(Paint.valueOf("#9d9d9d"));
-			content.setFont(new Font("System", 12));
 
-			title.getChildren().addAll(nameGroup, content);
-			root.getChildren().addAll(stack, title);
+			Circle circleView;
+			if (getStatusGroupOrFriend(item)) {
+				circleView = new Circle(4, Paint.valueOf("#2f2f7a"));
+			} else {
+				circleView = new Circle(4, Paint.valueOf("#b5b5b5"));
+			}
+
+			Region regionPaddingRightName = new Region();
+			HBox.setHgrow(regionPaddingRightName, Priority.ALWAYS);
+
+			title.getChildren().addAll(nameGroup);
+			root.getChildren().addAll(stack, title, regionPaddingRightName, circleView);
 			setGraphic(root);
 		}
 	}
@@ -70,21 +80,53 @@ public class CustomListCellGroup extends ListCell<Group> {
 		if (item.isChatGroup()) {
 			name = item.getName();
 		} else {
-			name = checkExistListUsers(item);
+			name = checkExisttUser(item);
 		}
 		return name;
 	}
 
-	private String checkExistListUsers(Group item) {
+	private String checkExisttUser(Group item) {
 		String name = "";
 		if (item.getListUserID().size() > 0)
-			for (Integer userId : item.getListUserID()) {
+			for (int userId : item.getListUserID()) {
 				if (userId != myId) {
 					name = getFullNameOfFriend(userId);
 					break;
 				}
 			}
 		return name;
+	}
+
+	private boolean getStatusGroupOrFriend(Group item) {
+		boolean status = false;
+		if (item.isChatGroup()) {
+			status = true;
+		} else {
+			status = checkExistUser(item);
+		}
+		return status;
+	}
+
+	private boolean checkExistUser(Group item) {
+		boolean status = false;
+		if (item.getListUserID().size() > 0)
+			for (Integer userId : item.getListUserID()) {
+				if (userId != myId) {
+					status = getStatusOfFriend(userId);
+					break;
+				}
+			}
+		return status;
+	}
+
+	private boolean getStatusOfFriend(Integer userId) {
+		boolean result = false;
+		for (User user : this.listFriends)
+			if (user.getId() == userId) {
+				result = user.isOnline();
+				break;
+			}
+		return result;
 	}
 
 	private String getFullNameOfFriend(Integer userId) {

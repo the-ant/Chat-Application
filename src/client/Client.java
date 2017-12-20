@@ -1,25 +1,22 @@
 package client;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 
-import javax.security.auth.login.LoginContext;
-
 import application.LoginRegisterController;
-import application.MainController;
 import interfaces.ReceiveResponseListener;
-import pojo.Relationship;
 
 public class Client {
 
 	private static class ClientHelper {
 		private static final Client INSTANCE = new Client();
 	}
-	
+
 	public static Client getInstance() {
 		return ClientHelper.INSTANCE;
 	}
-	
+
 	private static final String IP_ADDRESS = "127.0.0.1";
 	private static final int PORT = 5151;
 
@@ -44,18 +41,18 @@ public class Client {
 			System.out.println("--> Khong the ket noi den server!");
 		}
 	}
-	
+
 	public void login(String username, String password, ReceiveResponseListener listener) {
 		clientConnection.requestLoginToServer(username, password);
 		listener.onLoginReceive();
 	}
-	
+
 	public ClientConnection getClientConnection() {
 		return clientConnection;
 	}
-	
+
 	public void getRelationship(ReceiveResponseListener listener) {
-		
+
 	}
 
 	public void startClient() {
@@ -78,7 +75,10 @@ public class Client {
 
 	public void send(String msg) {
 		if (socket != null && socket.isConnected()) {
+			System.out.println("send");
 			clientConnection.sendMessage(msg);
+		} else {
+			System.out.println("ko send");
 		}
 	}
 
@@ -86,9 +86,25 @@ public class Client {
 		return connected;
 	}
 
-	public Relationship requestGetRelationship(ReceiveResponseListener listener) {
-		
-		return null;
+	public void sendFile(String requestSendFile, int groupId, File file) {
+		try {
+			Socket sendSocket = new Socket(IP_ADDRESS, PORT);
+			Thread sendFileThread = new Thread(new SendingFileRunnable(requestSendFile, sendSocket, file, groupId));
+			sendFileThread.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void downloadFile(String requestDownLoadFile, File file, String imgName) {
+		try {
+			Socket dlSocket = new Socket(IP_ADDRESS, PORT);
+			Thread dlFileThread = new Thread(
+					new DownloadFileRunnable(requestDownLoadFile, dlSocket, file, imgName));
+			dlFileThread.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

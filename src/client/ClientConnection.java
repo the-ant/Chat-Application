@@ -4,10 +4,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
+
+import org.json.JSONObject;
+
 import application.LoginRegisterController;
 import application.MainController;
 import javafx.application.Platform;
 import pojo.FlagConnection;
+import pojo.Message;
+import utils.JSONUtils;
 
 public class ClientConnection extends Thread {
 
@@ -33,18 +39,18 @@ public class ClientConnection extends Thread {
 	public void run() {
 		try {
 			while (running) {
-				while (dataIn.available() == 0);
+				while (dataIn.available() == 0) {
+					Thread.sleep(1);
+				}
 
 				String msg = dataIn.readUTF();
-				System.out.println("--> Receive from server: " + msg);
-
 				if (msg != null) {
 					int options = handleOptions(msg);
 					handleFrameReceive(options, msg);
 				}
 			}
 			close();
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			System.out.println(e.toString());
 			close();
 		}
@@ -100,7 +106,11 @@ public class ClientConnection extends Thread {
 	
 	private void handleLoginSuccessful(String msg) {
 		String[] inforUser = msg.substring(msg.indexOf(":") + 1).split("-");
-		loginRegisterController.getMyInfo(true, inforUser[1], Integer.parseInt(inforUser[0]), inforUser[2]);
+		System.out.println("handleLoginSuccessful: " + msg);
+		String fullname = inforUser[1];
+		int userId = Integer.parseInt(inforUser[0]);
+		String relationship = inforUser[2];
+		loginRegisterController.getMyInfo(true, fullname, userId, relationship);
 	}
 
 	private void handleLoginUnsuccessful(String msg) {
@@ -124,22 +134,10 @@ public class ClientConnection extends Thread {
 			receiveResponseLogout(Integer.parseInt(frameMsg[1]));
 			break;
 
-		case FlagConnection.SEND_MESSAGE:
-			receiveResponseSendMessage(Integer.parseInt(frameMsg[1]));
-			break;
-
 		case FlagConnection.GET_MESSAGE:
 			int groupId = Integer.parseInt(frameMsg[1]);
 			String msg = frameMsg[2];
 			receiveResponseGetMessage(groupId, msg);
-			break;
-
-		case FlagConnection.GET_GROUP:
-			receiveResponseGetGroup(frameMsg[1]);
-			break;
-
-		case FlagConnection.GET_USER:
-			receiveResponseGetUser(frameMsg[1]);
 			break;
 
 		case FlagConnection.ADD_FRIEND:
@@ -149,7 +147,40 @@ public class ClientConnection extends Thread {
 		case FlagConnection.ADD_GROUP:
 			receiveResponseAddGroup(Integer.parseInt(frameMsg[1]));
 			break;
+
+		case FlagConnection.RECEIVE_MESSAGE:
+			int receiveGroupId = Integer.parseInt(frameMsg[1]);
+			int senderId = Integer.parseInt(frameMsg[2]);
+			String receiveMsg = frameMsg[3];
+			boolean isFile = Boolean.parseBoolean(frameMsg[4]);
+			receiveMessage(receiveGroupId, senderId, receiveMsg, isFile);
+			break;
+			
+		case FlagConnection.NOTIFY_ONLINE:
+			int onlineUserId = Integer.parseInt(frameMsg[1]);
+			notifyOnlineFriend(onlineUserId);
+			break;
+			
+		case FlagConnection.NOTIFY_LOGOUT:
+			int logoutUserId = Integer.parseInt(frameMsg[1]);
+			notifyLogoutFriend(logoutUserId);
+			break;
+			
+		case FlagConnection.SEND_FILE:
+			break;
 		}
+	}
+
+	private void notifyLogoutFriend(int logoutUserId) {
+		Platform.runLater(() -> mainController.notifyLogoutFriend(logoutUserId));
+	}
+
+	private void notifyOnlineFriend(int onlineUserId) {
+		Platform.runLater(() -> mainController.notifyOnlineFriend(onlineUserId));
+	}
+
+	private void receiveMessage(int groupId, int senderId, String msg, boolean isFile) {
+		Platform.runLater(() -> mainController.setMessageToGroupById(groupId, senderId, msg, isFile));
 	}
 
 	private void receiveResponseAddGroup(int response) {
@@ -160,28 +191,16 @@ public class ClientConnection extends Thread {
 
 	}
 
-	private void receiveResponseGetUser(String response) {
-
-	}
-
-	private void receiveResponseGetGroup(String response) {
-
-	}
-
 	private void receiveResponseGetMessage(int groupId, String response) {
-//		int mainController.getSelectedGroup()
+		JSONObject msgsObj = JSONUtils.parseJSON(response);
+		List<Message> getMsgs = JSONUtils.parseMessages(msgsObj.getJSONArray("messages"));
+		Platform.runLater(() -> mainController.setMessagesToSelectedGroup(groupId, getMsgs));
 	}
 
-	private void receiveResponseSendMessage(int response) {
-		if (response == 1) {
-			mainController.setNewMessageToListView();
-		} else {
-			System.out.println("Khon the gui message");
+	private void receiveResponseLogout(int responseLogout) {
+		if (responseLogout == 1) {
+			Platform.runLater(() -> mainController.exit());
 		}
-	}
-
-	private void receiveResponseLogout(int response) {
-
 	}
 
 	public void requestGetRelationship() {
@@ -223,6 +242,7 @@ public class ClientConnection extends Thread {
 
 	public void sendMessage(String msg) {
 		try {
+			dataOut = new DataOutputStream(socket.getOutputStream());
 			dataOut.writeUTF(msg);
 			dataOut.flush();
 		} catch (IOException e) {

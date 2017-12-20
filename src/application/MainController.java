@@ -1,24 +1,34 @@
 package application;
 
+import java.io.File;
 import java.net.URL;
+import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import client.Client;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import pojo.CurrentUser;
@@ -32,6 +42,7 @@ import traynotification.TrayNotification;
 import utils.CustomListCellGroup;
 import utils.CustomListCellMessage;
 import utils.JSONUtils;
+import utils.PlaceHolderUtil;
 
 public class MainController implements Initializable {
 	@FXML
@@ -39,11 +50,17 @@ public class MainController implements Initializable {
 	@FXML
 	private ListView<Message> lvMessage;
 	@FXML
-	private Circle mAvatarCircle;
+	private Circle mAvatarCircle, groupAvatarCircle;
 	@FXML
 	private TextField tfSearch, tfTypeMessage;
 	@FXML
-	private Text friendChatNameText, friendChatStatusText;
+	private Text fullnameText, avatarText, friendChatNameText, friendChatStatusText, groupNameText;
+	@FXML
+	private ImageView sendMessage, sendFileImageView;
+	@FXML
+	private GridPane controlChatGridPane, infoSelectedFriendOrGroupChatGridPane;
+	@FXML
+	private MenuItem logoutMenuItem;
 
 	private Stage primaryStage = Main.getPrimaryStage();
 	private Client client = Client.getInstance();
@@ -53,44 +70,122 @@ public class MainController implements Initializable {
 	private ObservableList<Message> listMessages = FXCollections.observableArrayList();
 	private List<User> listFriends;
 
-	private String newMsg = "";
+	private Message newMsg;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		initInfoUser();
 		initClient();
 		initListFriend();
 		initMessage();
+		initStage();
+		initSearchGrouops();
+	}
+
+	private void initStage() {
+		primaryStage.setOnCloseRequest(e -> exit());
+
+		logoutMenuItem.setOnAction(e -> {
+			String requestLogout = FlagConnection.LOGOUT + "|";
+			client.send(requestLogout);
+		});
+
+		sendFileImageView.setOnMouseClicked(e -> {
+			Group selectedGroup = getSelectedGroup();
+			if (selectedGroup != null) {
+				FileChooser fc = new FileChooser();
+				File file = fc.showOpenDialog(primaryStage);
+				if (file != null) {
+					String fileName = file.getName();
+					System.out.println("sendFileImageView: " + fileName);
+					long size = file.length();
+					String desId = getDesFriendId(selectedGroup);
+
+					String requestSendFile = FlagConnection.SEND_FILE + "|" + me.getUser_id() + "|"
+							+ selectedGroup.getId() + "|" + desId + "|" + fileName + "," + size;
+					client.sendFile(requestSendFile, selectedGroup.getId(), file);
+
+					newMsg = new Message();
+					newMsg.setMessage(file.getName());
+					newMsg.setMe(true);
+					newMsg.setFile(true);
+
+					listMessages.add(newMsg);
+					tfTypeMessage.clear();
+					scrollToNewMsg();
+				}
+			}
+		});
+	}
+
+	private void initInfoUser() {
+		fullnameText.setText(me.getFullName());
+		avatarText.setText("" + me.getFullName().charAt(0));
 	}
 
 	private void initClient() {
 		client.getClientConnection().setMainController(this);
-		primaryStage.setOnCloseRequest(e -> client.closeClient());
 	}
 
 	private void initListFriend() {
 		setDataForListFriends(me.getRelationship());
 		lvGroups.setItems(listGroups);
 		lvGroups.setCellFactory(lv -> new CustomListCellGroup(listFriends, me.getUser_id()));
-		lvGroups.getSelectionModel().select(0);
+		lvGroups.setPlaceholder(PlaceHolderUtil.createPlaceHolderGroup());
+		lvGroups.setOnMouseClicked(e -> {
+			showControlAndInfoChatMessage();
+			loadMsgs();
+		});
+	}
+
+	private void loadMsgs() {
+		Group selectedGroup = lvGroups.getSelectionModel().getSelectedItem();
+		if (selectedGroup != null) {
+			String requestGetMsg = FlagConnection.GET_MESSAGE + "|" + selectedGroup.getId();
+			client.send(requestGetMsg);
+		}
 	}
 
 	private void initMessage() {
-		lvMessage.setCellFactory(lv -> new CustomListCellMessage());
+		hideControlAndInfoChatMessage();
+		lvMessage.setPlaceholder(PlaceHolderUtil.createPlaceHolderMessage());
+		lvMessage.setCellFactory(lv -> new CustomListCellMessage(this));
 		lvMessage.setItems(listMessages);
 
 		tfTypeMessage.setOnKeyPressed(e -> {
 			if (e.getCode() == KeyCode.ENTER && !tfTypeMessage.getText().isEmpty()) {
 				sendMessageTo(tfTypeMessage.getText());
-				newMsg = tfTypeMessage.getText();
+
+				newMsg = new Message();
+				newMsg.setMessage(tfTypeMessage.getText());
+				newMsg.setMe(true);
+
+				listMessages.add(newMsg);
+				tfTypeMessage.clear();
+				scrollToNewMsg();
 			}
 		});
 
-		tfTypeMessage.setOnMouseClicked(e -> {
+		sendMessage.setOnMouseClicked(e -> {
 			if (!tfTypeMessage.getText().isEmpty()) {
 				sendMessageTo(tfTypeMessage.getText());
-				newMsg = tfTypeMessage.getText();
+				if (newMsg != null) {
+					listMessages.add(newMsg);
+				}
+				tfTypeMessage.clear();
+				scrollToNewMsg();
 			}
 		});
+	}
+
+	private void scrollToNewMsg() {
+		if (listMessages.size() > 0) {
+			int lastPos = listMessages.size() - 1;
+			Platform.runLater(() -> {
+				lvMessage.scrollTo(lastPos);
+				lvMessage.getSelectionModel().select(lastPos);
+			});
+		}
 	}
 
 	private void sendMessageTo(String msg) {
@@ -105,21 +200,41 @@ public class MainController implements Initializable {
 		return result;
 	}
 
-	public void setNewMessageToListView() {
-
-	}
-
 	public Group getSelectedGroup() {
 		return lvGroups.getSelectionModel().getSelectedItem();
 	}
 
-	public void newUserNotification() {
-		System.out.println("hello");
-		String title = "Has a yourfriend online";
-		String message = "ThanhHang online";
-		NotificationType notification = NotificationType.NEWMESSAGE;
+	public void notifyLogoutFriend(int logoutUserId) {
+		handleNotification(logoutUserId, false);
+	}
+
+	public void notifyOnlineFriend(int onlineUserId) {
+		handleNotification(onlineUserId, true);
+	}
+
+	private void handleNotification(int userId, boolean online) {
+		for (int i = 0; i < listFriends.size(); i++) {
+			User user = listFriends.get(i);
+
+			if (user.getId() == userId) {
+				user.setOnline(online);
+				listFriends.set(i, user);
+
+				lvGroups.setCellFactory(lv -> new CustomListCellGroup(listFriends, me.getUser_id()));
+				lvGroups.refresh();
+				newUserNotification(user.getFullname(), user.isOnline());
+				break;
+			}
+		}
+	}
+
+	public void newUserNotification(String nameOnlineUser, boolean online) {
+		String message = nameOnlineUser + (online ? " đang online" : " đã offline");
+
+		NotificationType notification = NotificationType.USERONLINE;
 		TrayNotification tray = new TrayNotification();
-		tray.setTitle(title);
+
+		tray.setTitle("Notification " + (online ? "Online" : "Offline"));
 		tray.setMessage(message);
 		tray.setNotificationType(notification);
 		tray.setAnimationType(AnimationType.FADE);
@@ -133,7 +248,40 @@ public class MainController implements Initializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
 
+	public void notifyNewMsg(Message msg) {
+		NotificationType notification = NotificationType.NEWMESSAGE;
+		TrayNotification tray = new TrayNotification();
+
+		if (msg.isFile()) {
+			tray.setTitle("Bạn nhận được một tập tin từ " + getFullNameOfFriend(msg.getUserID()));
+			tray.setMessage("");
+		} else {
+			tray.setTitle("Có một tin nhắn mới từ " + getFullNameOfFriend(msg.getUserID()));
+			tray.setMessage(msg.getMessage());
+		}
+		tray.setNotificationType(notification);
+		tray.setAnimationType(AnimationType.FADE);
+		tray.showAndDismiss(Duration.seconds(3));
+
+		try {
+			Media media = new Media(getClass().getResource("/sounds/message.mp3").toURI().toString());
+			MediaPlayer player = new MediaPlayer(media);
+			player.setAutoPlay(true);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setMessagesToSelectedGroup(int groupId, List<Message> getMsgs) {
+		Group selectedGroup = getSelectedGroup();
+		if (selectedGroup != null && selectedGroup.getId() == groupId) {
+			listMessages.clear();
+			listMessages.addAll(getMsgs);
+			scrollToNewMsg();
+		}
 	}
 
 	public void setDataForListFriends(String listOfMyFriends) {
@@ -146,4 +294,233 @@ public class MainController implements Initializable {
 		this.listFriends = JSONUtils.parseFriends(jsonArrayListFriends);
 	}
 
+	public void setMessageToGroupById(int groupId, int senderId, String msg, boolean isFile) {
+		Group selectedGroup = getSelectedGroup();
+		Message newMsg = new Message(groupId, senderId, msg, false, isFile);
+		if (selectedGroup != null && selectedGroup.getId() == groupId) {
+			listMessages.add(newMsg);
+			scrollToNewMsg();
+		} else {
+			notifyNewMsg(newMsg);
+		}
+	}
+
+	public String getLastMessageFromGroup(int groupId) {
+		for (int i = listMessages.size() - 1; i >= 0; i--) {
+			Message msg = listMessages.get(i);
+			if (msg.getGroupID() == groupId) {
+				return msg.getMessage();
+			}
+		}
+		return "";
+	}
+
+	private void hideControlAndInfoChatMessage() {
+		infoSelectedFriendOrGroupChatGridPane.setManaged(false);
+		infoSelectedFriendOrGroupChatGridPane.setVisible(false);
+		controlChatGridPane.setManaged(false);
+		controlChatGridPane.setVisible(false);
+	}
+
+	private void showControlAndInfoChatMessage() {
+		Group currentGroup = lvGroups.getSelectionModel().getSelectedItem();
+		if (currentGroup != null) {
+
+			if (!infoSelectedFriendOrGroupChatGridPane.isManaged() && !infoSelectedFriendOrGroupChatGridPane.isVisible()
+					&& !controlChatGridPane.isManaged() && !controlChatGridPane.isVisible()) {
+				infoSelectedFriendOrGroupChatGridPane.setManaged(true);
+				infoSelectedFriendOrGroupChatGridPane.setVisible(true);
+				controlChatGridPane.setManaged(true);
+				controlChatGridPane.setVisible(true);
+			}
+
+			String name = getNameGroupOrFriend(currentGroup);
+			friendChatNameText.setText(name);
+			groupNameText.setText(name.charAt(0) + "");
+
+			friendChatStatusText.setText("> " + (isOnlineGroup(currentGroup) ? "online" : "offline"));
+		}
+	}
+
+	public boolean isOnlineGroup(Group currentGroup) {
+		boolean result = false;
+		if (currentGroup.isChatGroup()) {
+			String userGroup = currentGroup.getListUserIDStr();
+			for (User user : listFriends) {
+				if (userGroup.contains(user.getId() + ""))
+					if (user.isOnline()) {
+						result = true;
+						break;
+					}
+			}
+		} else {
+			if (checkOlineFriend())
+				result = true;
+			else
+				result = false;
+		}
+		return result;
+	}
+
+	private boolean checkOlineFriend() {
+		Group selectedGroup = getSelectedGroup();
+		if (selectedGroup != null && !selectedGroup.isChatGroup()) {
+			for (String userId : selectedGroup.getListUserIDStr().split("[,]")) {
+				int id = Integer.parseInt(userId);
+				if (id != me.getUser_id()) {
+					for (User user : listFriends) {
+						if (user.getId() == id && user.isOnline()) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean isChatGroup(int id) {
+		if (listGroups.size() > 0) {
+			for (Group group : listGroups)
+				if (group.getId() == id && group.isChatGroup())
+					return true;
+		}
+		return false;
+	}
+
+	private String getNameGroupOrFriend(Group item) {
+		String name = "";
+		if (item.isChatGroup()) {
+			name = item.getName();
+		} else {
+			name = checkExistListUsers(item);
+		}
+		return name;
+	}
+
+	private String checkExistListUsers(Group item) {
+		String name = "";
+		if (item.getListUserID().size() > 0)
+			for (Integer userId : item.getListUserID()) {
+				if (userId != me.getUser_id()) {
+					name = getFullNameOfFriend(userId);
+					break;
+				}
+			}
+		return name;
+	}
+
+	public String getFullNameOfFriend(int userId) {
+		String result = "";
+		for (User user : this.listFriends)
+			if (user.getId() == userId) {
+				result = user.getFullname();
+				break;
+			}
+		return result;
+	}
+
+	public void exit() {
+		String requestLogout = FlagConnection.LOGOUT + "|";
+		client.send(requestLogout);
+		client.closeClient();
+		primaryStage.close();
+	}
+
+	public void downloadFileFromServer(int groupId, String imgName) {
+		String requestDownLoadFile = FlagConnection.DOWN_LOAD_FILE + "|" + groupId + "|" + imgName;
+		System.out.println("downloadFileFromServer: " + requestDownLoadFile);
+		DirectoryChooser dc = new DirectoryChooser();
+		File file = dc.showDialog(primaryStage);
+		if (file != null && file.isDirectory()) {
+			client.downloadFile(requestDownLoadFile, file, imgName);
+		}
+	}
+
+	private void initSearchGrouops() {
+		List<User> filteredUser = new ArrayList<>();
+		ObservableList<Group> groups = FXCollections.observableArrayList();
+
+		tfSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredUser.clear();
+			groups.clear();
+			String lowerCaseFilter = deAccent(newValue.toLowerCase());
+
+			if (newValue != null || !newValue.isEmpty()) {
+
+				for (User user : listFriends) {
+					if (deAccent(user.getFullname()).toLowerCase().trim().contains(lowerCaseFilter.trim())) {
+						filteredUser.add(user);
+					}
+				}
+
+				for (Group group : listGroups) {
+					if (deAccent(group.getName()).toLowerCase().trim().contains(lowerCaseFilter.trim())) {
+						groups.add(group);
+					}
+				}
+
+				if (filteredUser.size() > 0) {
+					for (User user : filteredUser) {
+						Group group = getGroupByName(user);
+						if (group != null) {
+							boolean isExistGroup = isExistGroup(group, groups);
+							if (!isExistGroup) {
+								groups.add(group);
+							}
+						}
+					}
+				}
+			}
+
+			lvGroups.setCellFactory(lv -> new CustomListCellGroup(filteredUser, me.getUser_id()));
+			lvGroups.setItems(groups);
+			lvGroups.refresh();
+
+		});
+	}
+
+	private boolean isExistGroup(Group group, ObservableList<Group> groups) {
+		for (Group gr : groups) {
+			if (gr.getId() == group.getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private Group getGroupByName(User user) {
+		Group result = null;
+		for (Group group : listGroups) {
+			if (!group.isChatGroup()) {
+				if (group.getListUserID().size() > 0) {
+					for (int userId : group.getListUserID()) {
+						if (userId != me.getUser_id()) {
+							String name = getFullNameOfFriend(userId);
+							if (name.equals(user.getFullname())) {
+								return group;
+							}
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	public static String deAccent(String str) {
+		String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		return pattern.matcher(nfdNormalizedString).replaceAll("");
+	}
+
+	private String getFullNameOfFriend(Integer userId) {
+		String result = "";
+		for (User user : listFriends)
+			if (user.getId() == userId) {
+				result = user.getFullname();
+				break;
+			}
+		return result;
+	}
 }

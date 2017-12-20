@@ -23,7 +23,6 @@ public class Main extends Application {
 			setPrimaryStage(primaryStage);
 			Parent root = FXMLLoader.load(getClass().getResource("/view/LoginRegister.fxml"));
 			primaryStage.setTitle("Chat");
-			primaryStage.setResizable(false);
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.show();
