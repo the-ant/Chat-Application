@@ -21,6 +21,13 @@ public class Group {
 		this.isChatGroup = isChatGroup;
 	}
 
+	public Group(int id, String name, boolean isChatGroup, List<Integer> listUserID) {
+		this.id = id;
+		this.name = name;
+		this.listUserID = listUserID;
+		this.isChatGroup = isChatGroup;
+	}
+
 	public Group(String name, int userIDCreated, List<Integer> listUserID) {
 		this.name = name;
 		this.userIDCreated = userIDCreated;

@@ -16,6 +16,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
+import pojo.CurrentUser;
 import pojo.Group;
 import pojo.User;
 
@@ -61,9 +62,9 @@ public class CustomListCellGroup extends ListCell<Group> {
 
 			Circle circleView;
 			if (getStatusGroupOrFriend(item)) {
-				circleView = new Circle(4, Paint.valueOf("#2f2f7a"));
+				circleView = new Circle(3, Paint.valueOf("#44ff8c"));
 			} else {
-				circleView = new Circle(4, Paint.valueOf("#b5b5b5"));
+				circleView = new Circle(3, Paint.valueOf("#b5b5b5"));
 			}
 
 			Region regionPaddingRightName = new Region();
@@ -100,17 +101,28 @@ public class CustomListCellGroup extends ListCell<Group> {
 	private boolean getStatusGroupOrFriend(Group item) {
 		boolean status = false;
 		if (item.isChatGroup()) {
-			status = true;
+			status = getStatusGroup(item);
 		} else {
 			status = checkExistUser(item);
 		}
 		return status;
 	}
 
+	private boolean getStatusGroup(Group item) {
+		for (int id : item.getListUserID()) {
+			if (id != CurrentUser.getInstance().getUser_id()) {
+				if (getStatusOfFriend(id)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	private boolean checkExistUser(Group item) {
 		boolean status = false;
 		if (item.getListUserID().size() > 0)
-			for (Integer userId : item.getListUserID()) {
+			for (int userId : item.getListUserID()) {
 				if (userId != myId) {
 					status = getStatusOfFriend(userId);
 					break;
@@ -119,7 +131,7 @@ public class CustomListCellGroup extends ListCell<Group> {
 		return status;
 	}
 
-	private boolean getStatusOfFriend(Integer userId) {
+	private boolean getStatusOfFriend(int userId) {
 		boolean result = false;
 		for (User user : this.listFriends)
 			if (user.getId() == userId) {
@@ -129,7 +141,7 @@ public class CustomListCellGroup extends ListCell<Group> {
 		return result;
 	}
 
-	private String getFullNameOfFriend(Integer userId) {
+	private String getFullNameOfFriend(int userId) {
 		String result = "";
 		for (User user : this.listFriends)
 			if (user.getId() == userId) {

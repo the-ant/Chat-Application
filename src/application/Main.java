@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 
 public class Main extends Application {
 	private static Stage state;
@@ -22,7 +23,8 @@ public class Main extends Application {
 		try {
 			setPrimaryStage(primaryStage);
 			Parent root = FXMLLoader.load(getClass().getResource("/view/LoginRegister.fxml"));
-			primaryStage.setTitle("Chat");
+			primaryStage.setTitle("Meow Meow Chat");
+			primaryStage.getIcons().add(new Image("/images/ic_app.png"));
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.show();

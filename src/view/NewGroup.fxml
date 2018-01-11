@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import javafx.scene.control.*?>
@@ -7,26 +8,20 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="478.0" prefWidth="408.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../css/addmenu.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NewGroupController">
+<AnchorPane minWidth="-Infinity" prefHeight="465.0" prefWidth="359.0" style="-fx-background-color: rgb(249, 249, 249);" stylesheets="@../css/addmenu.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NewGroupController">
 	<children>
-		<Label layoutX="163.0" layoutY="14.0" text="New Group" textFill="#24283f">
-			<font>
-				<Font size="20.0" />
-			</font>
-		</Label>
-		<Button fx:id="createGroupBtn" contentDisplay="CENTER" layoutX="14.0" layoutY="420.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="127.0" text="Create Group" />
-		<TextField fx:id="tfGroupName" layoutX="125.0" layoutY="65.0" prefHeight="31.0" prefWidth="263.0" promptText="Input GroupName">
+		<Button fx:id="createGroupBtn" contentDisplay="CENTER" layoutX="116.0" layoutY="412.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="127.0" text="Create Group" />
+		<TextField fx:id="tfGroupName" alignment="CENTER" layoutX="20.0" layoutY="55.0" prefHeight="40.0" prefWidth="263.0" promptText="Input GroupName" style="-fx-background-color: rgb(216, 216, 216); -fx-background-radius: 4;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
 			<font>
 				<Font size="15.0" />
 			</font>
 		</TextField>
-		<Label layoutX="14.0" layoutY="68.0" text="Group Name:" textFill="#24283f">
-			<font>
-				<Font size="16.0" />
-			</font>
-		</Label>
-		<Text fx:id="notifyCreateGroup" fill="#24283f" layoutX="175.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="161.13671875" />
-		<VBox fx:id="listFriendVbox" layoutX="14.0" layoutY="116.0" prefHeight="291.0" prefWidth="376.0" />
+		<VBox fx:id="listFriendVbox" layoutX="19.0" layoutY="103.0" prefHeight="295.0" prefWidth="319.0" AnchorPane.leftAnchor="19.0" AnchorPane.rightAnchor="21.0" />
+      <Text fx:id="notifyCreateGroup" layoutX="116.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="339.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
 	</children>
 
 </AnchorPane>

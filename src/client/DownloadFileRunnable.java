@@ -3,14 +3,10 @@ package client;
 import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 public class DownloadFileRunnable implements Runnable {
 
@@ -35,6 +31,7 @@ public class DownloadFileRunnable implements Runnable {
 
 			InputStream fileIS = socket.getInputStream();
 			while (fileIS.available() == 0) {
+				Thread.sleep(1);
 			}
 
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(fileIS);
@@ -53,7 +50,7 @@ public class DownloadFileRunnable implements Runnable {
 			File dlFile = new File(file + "\\" + fileName);
 			Runtime.getRuntime()
 					.exec(new String[] { "rundll32", "url.dll,FileProtocolHandler", dlFile.getAbsolutePath() });
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

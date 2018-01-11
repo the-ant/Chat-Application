@@ -37,7 +37,7 @@ public class CustomListCellMessage extends ListCell<Message> {
 			setGraphic(null);
 		} else {
 
-			String nameUserSendMsg = controller.getFullNameOfFriend(item.getUserID());
+			String nameUserSendMsg = item.getSender();
 
 			HBox root = new HBox();
 			root.setAlignment(Pos.BOTTOM_LEFT);
@@ -65,20 +65,23 @@ public class CustomListCellMessage extends ListCell<Message> {
 			avatar.getChildren().add(stack);
 
 			if (item.isFile()) {
+				
 				HBox containerFile = new HBox();
 				containerFile.setAlignment(Pos.CENTER_LEFT);
 				containerFile.setSpacing(3);
 				
 				ImageView imgFile = new ImageView();
-				imgFile.setFitWidth(14);
-				imgFile.setFitHeight(14);
+				imgFile.setFitWidth(24);
+				imgFile.setFitHeight(24);
 				
 				Hyperlink linkFile = new Hyperlink();
+				linkFile.setFont(Font.font("System", 15));
 				linkFile.setStyle("-fx-border-color: transparent");
 				linkFile.setText(item.getMessage());
 				linkFile.setTextAlignment(TextAlignment.RIGHT);
 				
 				linkFile.setOnMouseClicked(e -> {
+					System.out.println("Cell: " + item.getGroupID());
 					Platform.runLater(() -> controller.downloadFileFromServer(item.getGroupID(), item.getMessage()));
 				});
 				
@@ -96,7 +99,7 @@ public class CustomListCellMessage extends ListCell<Message> {
 					root.setAlignment(Pos.CENTER_RIGHT);
 				} else {
 					linkFile.setTextFill(Paint.valueOf("#000000"));
-					imgFile.setImage(new Image("/images/file_friend.png"));
+					imgFile.setImage(new Image("/images/file_not_me.png"));
 					containerFile.getChildren().addAll(imgFile, linkFile);
 					
 					StackPane shapeMessage = new StackPane();

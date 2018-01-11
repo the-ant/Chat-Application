@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import application.AddFriendController;
 import application.LoginRegisterController;
 import application.MainController;
+import application.NewGroupController;
 import javafx.application.Platform;
 import pojo.FlagConnection;
 import pojo.Message;
@@ -26,6 +27,7 @@ public class ClientConnection extends Thread {
 	private LoginRegisterController loginRegisterController;
 	private MainController mainController;
 	private AddFriendController addFriendController;
+	private NewGroupController newGroupController;
 
 	public ClientConnection(LoginRegisterController controller, Socket socket) {
 		this.socket = socket;
@@ -146,9 +148,10 @@ public class ClientConnection extends Thread {
 		case FlagConnection.RECEIVE_MESSAGE:
 			int receiveGroupId = Integer.parseInt(frameMsg[1]);
 			int senderId = Integer.parseInt(frameMsg[2]);
-			String receiveMsg = frameMsg[3];
-			boolean isFile = Boolean.parseBoolean(frameMsg[4]);
-			receiveMessage(receiveGroupId, senderId, receiveMsg, isFile);
+			String sender = frameMsg[3];
+			String receiveMsg = frameMsg[4];
+			boolean isFile = Boolean.parseBoolean(frameMsg[5]);
+			receiveMessage(receiveGroupId, senderId, sender, receiveMsg, isFile);
 			break;
 
 		case FlagConnection.NOTIFY_ONLINE:
@@ -159,9 +162,6 @@ public class ClientConnection extends Thread {
 		case FlagConnection.NOTIFY_LOGOUT:
 			int logoutUserId = Integer.parseInt(frameMsg[1]);
 			notifyLogoutFriend(logoutUserId);
-			break;
-
-		case FlagConnection.SEND_FILE:
 			break;
 
 		case FlagConnection.GET_ALL_USER:
@@ -185,7 +185,33 @@ public class ClientConnection extends Thread {
 				Platform.runLater(() -> mainController.updateListView(frameMsg[1]));
 			}
 			break;
+
+		case FlagConnection.ADD_GROUP:
+			handleAddGroup(frameMsg);
+			break;
+
+		case FlagConnection.GET_RELATIONSHIP:
+			handleGetRelationships(frameMsg);
+			break;
+
+		}
+	}
+
+	private void handleGetRelationships(String[] frameMsg) {
+		System.out.println("handleGetRelationships: " + frameMsg[1]);
+		Platform.runLater(() -> mainController.setDataForListFriends(frameMsg[1]));
+	}
+
+	private void handleAddGroup(String[] frameMsg) {
+		int status = Integer.parseInt(frameMsg[1]);
+		if (status == 1) {
+			int groupId = Integer.parseInt(frameMsg[2]);
+			String name = frameMsg[3];
+			String userIds = frameMsg[4];
 			
+			Platform.runLater(() -> mainController.nofityAddGroup(true, groupId, name, userIds));
+		} else {
+			Platform.runLater(() -> newGroupController.nofityAddGroup(false, -1, "", ""));
 		}
 	}
 
@@ -200,6 +226,7 @@ public class ClientConnection extends Thread {
 	}
 
 	private void receiveRequestAddFriends(int userId, String fullName) {
+		System.out.println("receiveRequestAddFriends: " + fullName);
 		if (userId > 0 && !fullName.isEmpty()) {
 			Platform.runLater(() -> mainController.receiveRequestFriends(userId, fullName));
 		}
@@ -220,11 +247,12 @@ public class ClientConnection extends Thread {
 		Platform.runLater(() -> mainController.notifyOnlineFriend(onlineUserId));
 	}
 
-	private void receiveMessage(int groupId, int senderId, String msg, boolean isFile) {
-		Platform.runLater(() -> mainController.setMessageToGroupById(groupId, senderId, msg, isFile));
+	private void receiveMessage(int groupId, int senderId, String sender, String msg, boolean isFile) {
+		Platform.runLater(() -> mainController.setMessageToGroupById(groupId, senderId, sender, msg, isFile));
 	}
 
 	private void receiveResponseGetMessage(int groupId, String response) {
+		System.out.println("receiveResponseGetMessage: " + response);
 		JSONObject msgsObj = JSONUtils.parseJSON(response);
 		List<Message> getMsgs = JSONUtils.parseMessages(msgsObj.getJSONArray("messages"));
 		Platform.runLater(() -> mainController.setMessagesToSelectedGroup(groupId, getMsgs));
@@ -234,11 +262,6 @@ public class ClientConnection extends Thread {
 		if (responseLogout == 1) {
 			Platform.runLater(() -> mainController.exit());
 		}
-	}
-
-	public void requestGetRelationship() {
-		String requestGetRelationship = FlagConnection.GET_RELATIONSHIP + "|";
-		sendMessage(requestGetRelationship);
 	}
 
 	public void requestLoginToServer(String username, String password) {
@@ -290,5 +313,9 @@ public class ClientConnection extends Thread {
 
 	public void setAddFriendController(AddFriendController addFriendController) {
 		this.addFriendController = addFriendController;
+	}
+
+	public void setNGController(NewGroupController newGroupController) {
+		this.newGroupController = newGroupController;
 	}
 }

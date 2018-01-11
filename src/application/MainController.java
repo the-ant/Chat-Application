@@ -16,8 +16,11 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
@@ -84,27 +87,41 @@ public class MainController implements Initializable {
 	private ObservableList<Group> listGroups = FXCollections.observableArrayList();
 	private ObservableList<Message> listMessages = FXCollections.observableArrayList();
 	private ObservableList<User> users = FXCollections.observableArrayList();
-	private List<User> listFriends;
 
-	private Message newMsg;
+	private List<User> listFriends;
+	public boolean isSelectedHomeGroup = true;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initInfoUser();
 		initClient();
-		initListFriend();
+		initListGroups();
 		initMessage();
 		initStage();
-		initSearchGrouops();
+		initSearchGroup();
 		initAddMenu();
 	}
 
+	private void previousLogin() {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("/view/LoginRegister.fxml"));
+			Scene scene = new Scene(root);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void initStage() {
+		primaryStage.setResizable(true);
 		primaryStage.setOnCloseRequest(e -> exit());
 
 		logoutMenuItem.setOnAction(e -> {
 			String requestLogout = FlagConnection.LOGOUT + "|";
 			client.send(requestLogout);
+
+			Platform.runLater(() -> previousLogin());
 		});
 
 		sendFileImageView.setOnMouseClicked(e -> {
@@ -112,20 +129,23 @@ public class MainController implements Initializable {
 			if (selectedGroup != null) {
 				FileChooser fc = new FileChooser();
 				File file = fc.showOpenDialog(primaryStage);
+
 				if (file != null) {
 					String fileName = file.getName();
 					System.out.println("sendFileImageView: " + fileName);
 					long size = file.length();
 					String desId = getDesFriendId(selectedGroup);
 
-					String requestSendFile = FlagConnection.SEND_FILE + "|" + me.getUser_id() + "|"
-							+ selectedGroup.getId() + "|" + desId + "|" + fileName + "," + size;
+					String requestSendFile = FlagConnection.SEND_FILE + "|" + me.getUser_id() + "|" + me.getFullName()
+							+ "|" + selectedGroup.getId() + "|" + desId + "|" + fileName + "," + size;
 					client.sendFile(requestSendFile, selectedGroup.getId(), file);
 
-					newMsg = new Message();
+					Message newMsg = new Message();
 					newMsg.setMessage(file.getName());
+					newMsg.setSender(me.getFullName());
 					newMsg.setMe(true);
 					newMsg.setFile(true);
+					newMsg.setGroupID(selectedGroup.getId());
 
 					listMessages.add(newMsg);
 					tfTypeMessage.clear();
@@ -166,50 +186,51 @@ public class MainController implements Initializable {
 		});
 	}
 
-	private void initListFriend() {
+	private void initListGroups() {
 		setDataForListFriends(me.getRelationship());
-		
+
 		lvGroups.setItems(listGroups);
 		lvGroups.setCellFactory(lv -> new CustomListCellGroup(listFriends, me.getUser_id()));
 		lvGroups.setPlaceholder(PlaceHolderUtil.createPlaceHolderGroup());
-		
+
 		lvGroups.setOnMouseClicked(e -> {
 			showControlAndInfoChatMessage();
 			loadMsgs();
 		});
 
 		homeHBox.setOnMouseClicked(e -> {
-			client.send(FlagConnection.GET_ALL_REQUESTS + "|");
+			if (!isSelectedHomeGroup) {
+				isSelectedHomeGroup = true;
+				changeTop();
+			}
+			client.send(FlagConnection.GET_RELATIONSHIP + "|");
 			selectedHomeChat();
-			changeTop();
 		});
 
 		confirmFriendsHBox.setOnMouseClicked(e -> {
+			if (isSelectedHomeGroup) {
+				isSelectedHomeGroup = false;
+				changeTop();
+			}
+
 			client.send(FlagConnection.GET_ALL_REQUESTS + "|");
 			selectedConfirmFriends();
-			changeTop();
 		});
-		
+
 	}
 
 	private void selectedConfirmFriends() {
-
-		homeHBox.setStyle("-fx-background-color: rgb(249, 249, 249)");
 		homeChatImageView.setImage(new Image("/images/home_black.png"));
-
-		confirmFriendsHBox.setStyle("-fx-background-color:  white");
 		confirmFriendsImageView.setImage(new Image("/images/invite_selected.png"));
 
 		lvComfirmRequest.setItems(users);
-		lvComfirmRequest.setCellFactory(lv -> new CustomListCellConfirmRequest());
+		lvComfirmRequest.setCellFactory(lv -> new CustomListCellConfirmRequest(this));
 		lvComfirmRequest.getSelectionModel().select(0);
+		lvComfirmRequest.setPlaceholder(PlaceHolderUtil.createPlaceHolderConfirm());
 	}
 
 	private void selectedHomeChat() {
-		homeHBox.setStyle("-fx-background-color: white");
 		homeChatImageView.setImage(new Image("/images/home_selected.png"));
-
-		confirmFriendsHBox.setStyle("-fx-background-color:  rgb(249, 249, 249)");
 		confirmFriendsImageView.setImage(new Image("/images/invite_black.png"));
 	}
 
@@ -231,9 +252,10 @@ public class MainController implements Initializable {
 			if (e.getCode() == KeyCode.ENTER && !tfTypeMessage.getText().isEmpty()) {
 				sendMessageTo(tfTypeMessage.getText());
 
-				newMsg = new Message();
+				Message newMsg = new Message();
 				newMsg.setMessage(tfTypeMessage.getText());
 				newMsg.setMe(true);
+				newMsg.setSender(me.getFullName());
 
 				listMessages.add(newMsg);
 				tfTypeMessage.clear();
@@ -243,10 +265,14 @@ public class MainController implements Initializable {
 
 		sendMessage.setOnMouseClicked(e -> {
 			if (!tfTypeMessage.getText().isEmpty()) {
+				Message newMsg = new Message();
+				newMsg.setMessage(tfTypeMessage.getText());
+				newMsg.setMe(true);
+				newMsg.setSender(me.getFullName());
+
 				sendMessageTo(tfTypeMessage.getText());
-				if (newMsg != null) {
-					listMessages.add(newMsg);
-				}
+
+				listMessages.add(newMsg);
 				tfTypeMessage.clear();
 				scrollToNewMsg();
 			}
@@ -288,12 +314,13 @@ public class MainController implements Initializable {
 		handleNotification(onlineUserId, true);
 	}
 
-	private void handleNotification(int userId, boolean online) {
+	private void handleNotification(int userId, boolean offline) {
 		for (int i = 0; i < listFriends.size(); i++) {
 			User user = listFriends.get(i);
-
 			if (user.getId() == userId) {
-				user.setOnline(online);
+				System.out.println("handleNotification: " + user.getId() + " - " + offline);
+
+				user.setOnline(offline);
 				listFriends.set(i, user);
 
 				lvGroups.setCellFactory(lv -> new CustomListCellGroup(listFriends, me.getUser_id()));
@@ -331,8 +358,8 @@ public class MainController implements Initializable {
 		TrayNotification tray = new TrayNotification();
 
 		if (msg.isFile()) {
-			tray.setTitle("Bạn nhận được một tập tin từ " + getFullNameOfFriend(msg.getUserID()));
-			tray.setMessage("");
+			tray.setTitle("Bạn nhận được một tập tin từ ");
+			tray.setMessage(getFullNameOfFriend(msg.getUserID()));
 		} else {
 			tray.setTitle("Có một tin nhắn mới từ " + getFullNameOfFriend(msg.getUserID()));
 			tray.setMessage(msg.getMessage());
@@ -361,6 +388,8 @@ public class MainController implements Initializable {
 	}
 
 	public void setDataForListFriends(String listOfMyFriends) {
+		listGroups.clear();
+
 		JSONObject jsonData = new JSONObject(listOfMyFriends);
 
 		JSONArray jsonArrayGroups = jsonData.getJSONArray("groups");
@@ -370,9 +399,10 @@ public class MainController implements Initializable {
 		this.listFriends = JSONUtils.parseFriends(jsonArrayListFriends);
 	}
 
-	public void setMessageToGroupById(int groupId, int senderId, String msg, boolean isFile) {
+	public void setMessageToGroupById(int groupId, int senderId, String sender, String msg, boolean isFile) {
 		Group selectedGroup = getSelectedGroup();
-		Message newMsg = new Message(groupId, senderId, msg, false, isFile);
+		Message newMsg = new Message(groupId, senderId, sender, msg, isFile);
+
 		if (selectedGroup != null && selectedGroup.getId() == groupId) {
 			listMessages.add(newMsg);
 			scrollToNewMsg();
@@ -414,26 +444,27 @@ public class MainController implements Initializable {
 			friendChatNameText.setText(name);
 			groupNameText.setText(name.charAt(0) + "");
 
-			friendChatStatusText.setText("> " + (isOnlineGroup(currentGroup) ? "online" : "offline"));
+			friendChatStatusText.setText("> " + getStatusGroup(currentGroup));
 		}
 	}
 
-	public boolean isOnlineGroup(Group currentGroup) {
-		boolean result = false;
+	public String getStatusGroup(Group currentGroup) {
+		String result = me.getFullName() + ", ";
 		if (currentGroup.isChatGroup()) {
 			String userGroup = currentGroup.getListUserIDStr();
 			for (User user : listFriends) {
-				if (userGroup.contains(user.getId() + ""))
-					if (user.isOnline()) {
-						result = true;
-						break;
-					}
+				if (userGroup.contains(user.getId() + "")) {
+					result += user.getFullname() + ", ";
+				}
+			}
+			if (!result.equals("")) {
+				result = result.substring(0, result.length() - 2);
 			}
 		} else {
 			if (checkOlineFriend())
-				result = true;
+				result = "Online";
 			else
-				result = false;
+				result = "Offline";
 		}
 		return result;
 	}
@@ -488,19 +519,19 @@ public class MainController implements Initializable {
 
 	public String getFullNameOfFriend(int userId) {
 		String result = "";
-		for (User user : this.listFriends)
+		for (User user : this.listFriends) {
 			if (user.getId() == userId) {
 				result = user.getFullname();
 				break;
 			}
+		}
 		return result;
 	}
 
 	public void exit() {
 		String requestLogout = FlagConnection.LOGOUT + "|";
 		client.send(requestLogout);
-		client.closeClient();
-		primaryStage.close();
+		System.exit(0);
 	}
 
 	public void downloadFileFromServer(int groupId, String imgName) {
@@ -513,7 +544,7 @@ public class MainController implements Initializable {
 		}
 	}
 
-	private void initSearchGrouops() {
+	private void initSearchGroup() {
 		List<User> filteredUser = new ArrayList<>();
 		ObservableList<Group> groups = FXCollections.observableArrayList();
 
@@ -549,10 +580,8 @@ public class MainController implements Initializable {
 				}
 			}
 
-			lvGroups.setCellFactory(lv -> new CustomListCellGroup(filteredUser, me.getUser_id()));
 			lvGroups.setItems(groups);
-			lvGroups.refresh();
-
+			lvGroups.setCellFactory(lv -> new CustomListCellGroup(filteredUser, me.getUser_id()));
 		});
 	}
 
@@ -601,12 +630,37 @@ public class MainController implements Initializable {
 	}
 
 	public void receiveRequestFriends(int userId, String fullName) {
+		System.out.println("receiveRequestFriends: " + fullName);
+		notifyNewInviteFriend(fullName);
 		User user = new User(userId, fullName);
 		this.users.add(user);
-		lvComfirmRequest.setCellFactory(lv -> new CustomListCellConfirmRequest());
+		lvComfirmRequest.setCellFactory(lv -> new CustomListCellConfirmRequest(this));
+		if (!isSelectedHomeGroup) {
+			lvComfirmRequest.setItems(users);
+		}
 	}
 
-	private void changeTop() {
+	public void notifyNewInviteFriend(String fullName) {
+		NotificationType notification = NotificationType.NEWMESSAGE;
+		TrayNotification tray = new TrayNotification();
+
+		tray.setTitle("Có một lời mời kết bạn từ");
+		tray.setMessage(fullName);
+		tray.setNotificationType(notification);
+		tray.setAnimationType(AnimationType.FADE);
+		tray.showAndDismiss(Duration.seconds(3));
+
+		try {
+			Media media = new Media(getClass().getResource("/sounds/message.mp3").toURI().toString());
+			MediaPlayer player = new MediaPlayer(media);
+			player.setAutoPlay(true);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void changeTop() {
 		ObservableList<Node> childs = this.listViewStackPane.getChildren();
 		if (childs.size() > 1) {
 			Node topNode = childs.get(childs.size() - 1);
@@ -623,8 +677,8 @@ public class MainController implements Initializable {
 		listFriends.clear();
 
 		setDataForListFriends(relationship);
-		lvGroups.setItems(listGroups);
 		lvGroups.setCellFactory(lv -> new CustomListCellGroup(listFriends, me.getUser_id()));
+		lvGroups.setItems(listGroups);
 	}
 
 	public void updateListOfRequests(List<User> allRequestUsers) {
@@ -632,9 +686,21 @@ public class MainController implements Initializable {
 		if (allRequestUsers != null) {
 			users.addAll(allRequestUsers);
 			lvComfirmRequest.setItems(users);
-			lvComfirmRequest.setCellFactory(lv -> new CustomListCellConfirmRequest());
+			lvComfirmRequest.setCellFactory(lv -> new CustomListCellConfirmRequest(this));
 		} else {
 			lvComfirmRequest.setItems(users);
+		}
+	}
+
+	public void nofityAddGroup(boolean isSuccess, int groupId, String name, String userIds) {
+		if (isSuccess) {
+			List<Integer> listUserIds = new ArrayList<>();
+			for (String id : userIds.split("[,]")) {
+				listUserIds.add(Integer.parseInt(id));
+			}
+			Group group = new Group(groupId, name, true, listUserIds);
+			listGroups.add(group);
+			lvGroups.setItems(listGroups);
 		}
 	}
 }

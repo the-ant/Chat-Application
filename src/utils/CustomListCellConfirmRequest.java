@@ -1,6 +1,8 @@
 package utils;
 
+import application.MainController;
 import client.Client;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -9,7 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -20,8 +21,15 @@ import pojo.FlagConnection;
 import pojo.User;
 
 public class CustomListCellConfirmRequest extends ListCell<User> {
+
 	private Client client = Client.getInstance();
 	private Button btnConfirm;
+	private MainController controller;
+	
+	public CustomListCellConfirmRequest(MainController controller) {
+		this.controller = controller;
+	}
+
 	@Override
 	protected void updateItem(User item, boolean empty) {
 		super.updateItem(item, empty);
@@ -45,29 +53,28 @@ public class CustomListCellConfirmRequest extends ListCell<User> {
 			StackPane stack = new StackPane();
 			stack.getChildren().addAll(circleAvatar, textCircle);
 
-			VBox title = new VBox();
-			title.setAlignment(Pos.CENTER_LEFT);
-			title.setSpacing(2);
 			Text nameGroup = new Text(name);
 			nameGroup.setFont(new Font("System", 18));
-			Text content = new Text(name);
-			content.setFill(Paint.valueOf("#9d9d9d"));
-			content.setFont(new Font("System", 12));
-			
+
 			btnConfirm = new Button();
 			btnConfirm.setText("Confirm");
-			btnConfirm.setOnAction(e->{
+			btnConfirm.getStylesheets().addAll("/css/button.css");
+
+			btnConfirm.setOnAction(e -> {
 				handleConfirmRequest(item.getId());
 			});
+
 			Region regionPaddingRightName = new Region();
 			HBox.setHgrow(regionPaddingRightName, Priority.ALWAYS);
 
-			title.getChildren().addAll(nameGroup, content);
-			root.getChildren().addAll(stack, title, regionPaddingRightName,btnConfirm);
+			root.getChildren().addAll(stack, nameGroup, regionPaddingRightName, btnConfirm);
 			setGraphic(root);
 		}
 	}
+
 	private void handleConfirmRequest(int userIdRequested) {
-		client.send(FlagConnection.DELETE_REQUEST_RECORD + "|" + userIdRequested);
+		Platform.runLater(() -> {
+			client.send(FlagConnection.DELETE_REQUEST_RECORD + "|" + userIdRequested);
+		});
 	}
 }

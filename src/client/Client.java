@@ -6,6 +6,7 @@ import java.net.Socket;
 
 import application.AddFriendController;
 import application.LoginRegisterController;
+import application.NewGroupController;
 import interfaces.ReceiveResponseListener;
 
 public class Client {
@@ -18,7 +19,7 @@ public class Client {
 		return ClientHelper.INSTANCE;
 	}
 
-	private static final String IP_ADDRESS = "127.0.0.1";
+	private static final String IP_ADDRESS = "192.168.1.83";
 	private static final int PORT = 5151;
 
 	private ClientConnection clientConnection;
@@ -109,6 +110,10 @@ public class Client {
 
 	public void setAddFriendController(AddFriendController addFriendController) {
 		this.getClientConnection().setAddFriendController(addFriendController);
+	}
+
+	public void setNewGroupController(NewGroupController newGroupController) {
+		clientConnection.setNGController(newGroupController);
 	}
 
 }

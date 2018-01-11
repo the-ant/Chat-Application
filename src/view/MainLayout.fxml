@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane prefHeight="600.0" prefWidth="1080.0" style="-fx-background-color: white;" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+<BorderPane minHeight="600.0" minWidth="730.0" prefHeight="600.0" prefWidth="1080.0" style="-fx-background-color: white;" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
 	<left>
-		<BorderPane prefHeight="601.0" prefWidth="286.0" style="-fx-background-color: rgb(230, 234, 237); -fx-border-color: rgb(178, 178, 178);" BorderPane.alignment="CENTER">
+		<BorderPane prefHeight="601.0" prefWidth="286.0" style="-fx-background-color: rgb(249, 249, 249); -fx-border-color: rgb(178, 178, 178);" BorderPane.alignment="CENTER">
 			<top>
 				<GridPane prefHeight="120.0" prefWidth="343.0">
 					<columnConstraints>
@@ -98,7 +98,7 @@
 			<center>
             <StackPane fx:id="listViewStackPane">
                <children>
-                  <ListView fx:id="lvComfirmRequest" prefHeight="200.0" prefWidth="200.0" />
+                  <ListView fx:id="lvComfirmRequest" prefHeight="45.0" prefWidth="284.0" />
       				<ListView fx:id="lvGroups" fixedCellSize="60.0" prefHeight="471.0" prefWidth="308.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets top="10.0" />
@@ -108,7 +108,7 @@
             </StackPane>
 			</center>
          <bottom>
-            <GridPane prefHeight="50.0" prefWidth="284.0" BorderPane.alignment="CENTER">
+            <GridPane maxHeight="52.0" maxWidth="286.0" minHeight="52.0" minWidth="286.0" prefHeight="51.0" prefWidth="284.0" style="-fx-border-color: rgb(178, 178, 178);" BorderPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -136,6 +136,9 @@
                      </children>
                   </HBox>
                </children>
+               <BorderPane.margin>
+                  <Insets bottom="-1.0" left="-1.0" right="-1.0" />
+               </BorderPane.margin>
             </GridPane>
          </bottom>
 		</BorderPane>
@@ -155,7 +158,7 @@
 			<bottom>
 				<GridPane fx:id="controlChatGridPane" prefHeight="51.0" prefWidth="639.0" style="-fx-border-color: rgb(221, 221, 221);" BorderPane.alignment="CENTER">
 					<columnConstraints>
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="601.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
 						<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="136.0" minWidth="10.0" prefWidth="136.0" />
 					</columnConstraints>
 					<rowConstraints>
@@ -170,13 +173,8 @@
                         <Insets bottom="-1.0" left="-1.0" />
                      </GridPane.margin>
 						</TextField>
-						<HBox alignment="CENTER" prefHeight="49.0" spacing="10.0" GridPane.columnIndex="1">
+						<HBox alignment="CENTER" prefHeight="49.0" spacing="30.0" GridPane.columnIndex="1">
 							<children>
-								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-									<image>
-										<Image url="@../images/add_image.png" />
-									</image>
-								</ImageView>
 								<ImageView fx:id="sendFileImageView" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
 									<image>
 										<Image url="@../images/attachment.png" />
@@ -249,14 +247,6 @@
                         <AnchorPane maxWidth="940.0" />
                      </children>
                   </VBox>
-                  <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
-                     <image>
-                        <Image url="@../images/add_people.png" />
-                     </image>
-                     <GridPane.margin>
-                        <Insets right="10.0" />
-                     </GridPane.margin>
-                  </ImageView>
                </children>
                <BorderPane.margin>
                   <Insets left="-1.0" right="-1.0" top="-1.0" />

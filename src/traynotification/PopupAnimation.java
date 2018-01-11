@@ -64,11 +64,6 @@ public class PopupAnimation implements TrayAnimation {
         return tl;
     }
 
-    /**
-     * The type of animation this class plays
-     *
-     * @return The type of animation this class plays
-     */
     @Override
     public AnimationType getAnimationType() {
         return AnimationType.POPUP;

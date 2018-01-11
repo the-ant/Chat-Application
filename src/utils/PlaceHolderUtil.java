@@ -10,7 +10,8 @@ import javafx.scene.text.Font;
 
 public class PlaceHolderUtil {
 	
-	public static final String LIST_GROUP = "Press Add button to add friends";
+	public static final String LIST_GROUP = "Press Add button to \nadd friends";
+	public static final String CONFIRM = "There is no friend request";
 	public static final String PATH_IMG_GROUP = "/images/place_holder_group.png";
 	public static final String PATH_IMG_MESSAGE = "/images/place_holder_message.png";
 
@@ -33,6 +34,21 @@ public class PlaceHolderUtil {
 		VBox placeHolder = new VBox();
 		placeHolder.setPadding(new Insets(20));
 		placeHolder.getChildren().add(new ImageView(new Image(PATH_IMG_MESSAGE)));
+		placeHolder.setAlignment(Pos.CENTER);
+		return placeHolder;
+	}
+
+	public static VBox createPlaceHolderConfirm() {
+		VBox placeHolder = new VBox();
+		placeHolder.setPadding(new Insets(20));
+		
+		placeHolder.getChildren().add(new ImageView(new Image(PATH_IMG_GROUP)));
+		
+		Label txtPlaceHolder = new Label(CONFIRM);
+		txtPlaceHolder.setAlignment(Pos.CENTER);
+		txtPlaceHolder.setFont(new Font("System", 18));
+		
+		placeHolder.getChildren().add(txtPlaceHolder);
 		placeHolder.setAlignment(Pos.CENTER);
 		return placeHolder;
 	}

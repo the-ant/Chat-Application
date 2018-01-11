@@ -13,14 +13,12 @@ public class SendingFileRunnable implements Runnable{
 	
 	private Socket socket;
 	private File file;
-	private int groupId;
 	private String requestSendFile;
 
 	public SendingFileRunnable(String requestSendFile, Socket socket, File file, int groupId) {
 		this.requestSendFile = requestSendFile;
 		this.socket = socket;
 		this.file = file;
-		this.groupId = groupId;
 	}
 
 	@Override

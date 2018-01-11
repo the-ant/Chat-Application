@@ -134,10 +134,6 @@ public final class TrayNotification {
         return animator.isShowing();
     }
 
-    /**
-     * Shows and dismisses the tray notification
-     * @param dismissDelay How long to delay the start of the dismiss animation
-     */
     public void showAndDismiss(Duration dismissDelay) {
 
         if (isTrayShowing()) {
@@ -152,9 +148,6 @@ public final class TrayNotification {
         onDismissed();
     }
 
-    /**
-     * Displays the notification tray
-     */
     public void showAndWait() {
 
         if (! isTrayShowing()) {
@@ -166,9 +159,6 @@ public final class TrayNotification {
         }
     }
 
-    /**
-     * Dismisses the notifcation tray
-     */
     public void dismiss() {
 
         if (isTrayShowing()) {
@@ -187,26 +177,14 @@ public final class TrayNotification {
             onDismissedCallBack.handle(new ActionEvent());
     }
 
-    /**
-     * Sets an action event for when the tray has been dismissed
-     * @param event The event to occur when the tray has been dismissed
-     */
     public void setOnDismiss(EventHandler<ActionEvent> event) {
         onDismissedCallBack  = event;
     }
 
-    /**
-     * Sets an action event for when the tray has been shown
-     * @param event The event to occur after the tray has been shown
-     */
     public void setOnShown(EventHandler<ActionEvent> event) {
         onShownCallback  = event;
     }
 
-    /**
-     * Sets a new task bar image for the tray
-     * @param img The image to assign
-     */
     public void setTrayIcon(Image img) {
         stage.getIcons().clear();
         stage.getIcons().add(img);
@@ -216,10 +194,6 @@ public final class TrayNotification {
         return stage.getIcons().get(0);
     }
 
-    /**
-     * Sets a title to the tray
-     * @param txt The text to assign to the tray icon
-     */
     public void setTitle(String txt) {
         lblTitle.setText(txt);
     }
@@ -228,10 +202,6 @@ public final class TrayNotification {
         return lblTitle.getText();
     }
 
-    /**
-     * Sets the message for the tray notification
-     * @param txt The text to assign to the body of the tray notification
-     */
     public void setMessage(String txt) {
         lblMessage.setText(txt);
     }

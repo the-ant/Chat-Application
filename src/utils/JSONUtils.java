@@ -40,8 +40,9 @@ public class JSONUtils {
 			String message = msgObj.getString(StructureDB.MESSAGE);
 			int userID = msgObj.getInt(StructureDB.MESSAGE_USER_ID);
 			boolean isFile = msgObj.getBoolean(StructureDB.MESSAGE_IS_FILE);
+			String sender = msgObj.getString(StructureDB.MESSAGE_SENDER);
 
-			result = new Message(groupID, userID, message, isFile);
+			result = new Message(groupID, userID, sender, message, isFile);
 			if (userID == CurrentUser.getInstance().getUser_id()) {
 				result.setMe(true);
 			}

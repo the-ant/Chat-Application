@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import pojo.CurrentUser;
 
 public class LoginRegisterController implements Initializable {
@@ -33,6 +34,7 @@ public class LoginRegisterController implements Initializable {
 	@FXML
 	private TextField lgUsername, lgPassword, rgUsername, rgPassword, rgConfirmPassword, rgFullName;
 
+	private Stage primaryStage = Main.getPrimaryStage();
 	private Client client = Client.getInstance();
 	private String username, password, confirmPassword;
 	private String msgAlertError;
@@ -43,8 +45,19 @@ public class LoginRegisterController implements Initializable {
 	}
 
 	private void init() {
+		primaryStage.setMinHeight(600);
+		primaryStage.setMinWidth(731);
+		primaryStage.setWidth(731);
+		primaryStage.setHeight(600);
+		primaryStage.setResizable(false);
+		primaryStage.setOnCloseRequest(e ->  exit());
+		
 		client.init(this);
 		handleEventFromLoginRegisterForm();
+	}
+
+	public void exit() {
+		System.exit(0);
 	}
 
 	private void handleEventFromLoginRegisterForm() {
@@ -258,6 +271,13 @@ public class LoginRegisterController implements Initializable {
 			Scene scene = new Scene(root);
 			Main.getPrimaryStage().setScene(scene);
 			Main.getPrimaryStage().show();
+
+			Main.getPrimaryStage().setMinHeight(640);
+			Main.getPrimaryStage().setMinWidth(940);
+			Main.getPrimaryStage().setWidth(940);
+			Main.getPrimaryStage().setX(300);
+			Main.getPrimaryStage().setY(50);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
